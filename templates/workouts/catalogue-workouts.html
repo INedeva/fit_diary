@@ -1,0 +1,233 @@
+{%  extends 'base.html' %}
+{%  load static %}
+{% block main_content %}
+
+	<!-- Classes Section -->
+	<section class="classes-page-section spad overflow-hidden">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="classes-top">
+						<div class="row">
+
+                            <div class="col-md-6">
+
+                                <p>Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ total_workouts }} classes</p>
+
+                            </div>
+
+
+							<div class="col-md-6">
+                                <form method="get">
+                                    <!-- Hidden fields for filtering parameters -->
+                                    <input type="hidden" name="category" value="{{ request.GET.category }}">
+                                    <input type="hidden" name="type" value="{{ request.GET.type }}">
+                                    <input type="hidden" name="intensity" value="{{ request.GET.intensity }}">
+
+                                    <select name="sort" class="circle-select" onchange="this.form.submit()">
+                                        <option value="" {% if request.GET.sort == "" %}selected{% endif %}>Default Sorting</option>
+                                        <option value="oldest" {% if request.GET.sort == "oldest" %}selected{% endif %}>Oldest</option>
+                                        <option value="newest" {% if request.GET.sort == "newest" %}selected{% endif %}>Newest</option>
+                                        <option value="a_z" {% if request.GET.sort == "a_z" %}selected{% endif %}>A-Z</option>
+                                        <option value="z_a" {% if request.GET.sort == "z_a" %}selected{% endif %}>Z-A</option>
+                                    </select>
+                                </form>
+                            </div>
+						</div>
+					</div>
+					<div class="row">
+
+                    {%  for obj in object_list %}
+
+
+						<div class="col-md-6">
+							<div class="classes-item-warp">
+								<div class="classes-item">
+									<div class="ci-img">
+{#										<img src="{% static 'img/classes/1.jpg' %}" alt="">#}
+{#                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>#}
+                                        <iframe src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+									</div>
+									<div class="ci-text">
+										<h4>{{ obj.name }}</h4>
+										<div class="ci-metas">
+{#                                            TODO: Add more suitable icons#}
+											<div class="ci-meta"><i class="material-icons">event_available</i>{{ obj.type }}</div>
+											<div class="ci-meta"><i class="material-icons">alarm_on</i>{{ obj.category }}</div>
+                                            <div class="ci-meta"><i class="material-icons">alarm_on</i>{{ obj.intensity }}</div>
+										</div>
+										<p>Description: {{ obj.description }}. </p>
+                                        <p>Equipment needed: {{ obj.equipment_needed }}</p>
+									</div>
+
+									<div class="ci-bottom">
+										<div class="ci-author">
+{#											<img src="{%  static 'img/classes/author/1.jpg' %}" alt="">#}
+{#											<div class="author-text">#}
+{#												<h6>Victoria Webb</h6>#}
+{#												<p>Yoga Trainer</p>#}
+{#											</div>#}
+                                            <a href="" class="site-btn sb-gradient">edit</a>
+										</div>
+
+                                        <a href="" class="site-btn sb-gradient">delete</a>
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+                    {%  endfor %}
+
+
+
+
+					</div>
+{#                TODO: Add pagination#}
+{#					<div class="site-pagination pt-3">#}
+{#						<a href="#" class="active">1</a>#}
+{#						<a href="#">2</a>#}
+{#						<a href="#"><i class="material-icons">keyboard_arrow_right</i></a>#}
+{#					</div>#}
+
+                    <div class="site-pagination pt-3">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; </a>
+                            <a href="?page={{ page_obj.previous_page_number }}"><i class="material-icons">keyboard_arrow_left</i></a>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <a href="?page={{ num }}" class="active">{{ num }}</a>
+                            {% else %}
+                                <a href="?page={{ num }}">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}"><i class="material-icons">keyboard_arrow_right</i></a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}"> &raquo;</a>
+                        {% endif %}
+                    </div>
+
+
+
+				</div>
+
+
+            <div class="col-lg-3 col-md-5 col-sm-8 sidebar">
+                <div class="sb-widget">
+                    <h2 class="sb-title">Search Workouts</h2>
+                    <form class="classes-filter" action="" method="get">
+                            <!-- Hidden field for sorting parameter -->
+                            <input type="hidden" name="sort" value="{{ request.GET.sort }}">
+
+                        <select name="category" class="circle-select">
+                            <option value="">Choose Category</option>
+                            {% for value, name in category_choices %}
+                                <option value="{{ value }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="type" class="circle-select">
+                            <option value="">Choose Type</option>
+                            {% for value, name in workout_type_choices %}
+                                <option value="{{ value }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="intensity" class="circle-select">
+                            <option value="">Choose Intensity</option>
+                            {% for value, name in intensity_choices %}
+                                <option value="{{ value }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+{#                        <button type="submit">Search</button>#}
+{#                    </form>#}
+{#                </div>#}
+
+
+
+{#                                TODO: Add filtration by keyword for equipment#}
+{#							<h3>Filter by Day</h3>#}
+{#							<div class="cf-cal">#}
+{#								<div class="cf-radio">#}
+{#									<input type="checkbox" name="sc" id="monday">#}
+{#									<label for="monday">Monday</label>#}
+{#								</div>#}
+{#								<div class="cf-radio">#}
+{#									<input type="checkbox" name="sc" id="tuesday">#}
+{#									<label for="tuesday">Tuesday</label>#}
+{#								</div>#}
+{#								<div class="cf-radio">#}
+{#									<input type="checkbox" name="sc" id="wednesday">#}
+{#									<label for="wednesday">Wednesday</label>#}
+{#								</div>#}
+{#								<div class="cf-radio">#}
+{#									<input type="checkbox" name="sc" id="thurstday">#}
+{#									<label for="thurstday">Thurstday</label>#}
+{#								</div>#}
+{#							</div>#}
+{#							<div class="cf-cal">#}
+{#								<div class="cf-radio">#}
+{#									<input type="checkbox" name="sc" id="friday">#}
+{#									<label for="friday">Friday</label>#}
+{#								</div>#}
+{#								<div class="cf-radio">#}
+{#									<input type="checkbox" name="sc" id="saturday">#}
+{#									<label for="saturday">Saturday</label>#}
+{#								</div>#}
+{#								<div class="cf-radio">#}
+{#									<input type="checkbox" name="sc" id="sunday">#}
+{#									<label for="sunday">Sunday</label>#}
+{#								</div>#}
+{#							</div>#}
+{#							<div class="clearfix"></div>#}
+							<button class="site-btn sb-gradient">Filter now</button>
+						</form>
+					</div>
+
+{#					<div class="sb-widget">#}
+{#						<h2 class="sb-title">Popular Classes</h2>#}
+{#						<div class="popular-classes-widget owl-carousel">#}
+{#							<div class="pc-item">#}
+{#								<div class="pc-thumb set-bg" data-setbg="img/event/1.jpg"></div>#}
+{#								<div class="pc-text">#}
+{#									<h4><a href="#">Yoga Balance</a></h4>#}
+{#									<ul>#}
+{#										<li><i class="material-icons">event_available</i>Mon, Wed, Fri</li>#}
+{#										<li><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</li>#}
+{#										<li><i class="material-icons">person_outline</i>Carolyn Berry</li>#}
+{#									</ul>#}
+{#								</div>#}
+{#							</div>#}
+{#							<div class="pc-item">#}
+{#								<div class="pc-thumb set-bg" data-setbg="img/event/2.jpg"></div>#}
+{#								<div class="pc-text">#}
+{#									<h4><a href="#">Yoga Balance</a></h4>#}
+{#									<ul>#}
+{#										<li><i class="material-icons">event_available</i>Mon, Wed, Fri</li>#}
+{#										<li><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</li>#}
+{#										<li><i class="material-icons">person_outline</i>Carolyn Berry</li>#}
+{#									</ul>#}
+{#								</div>#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+
+{#                    TODO: remove USELESS#}
+{#					<div class="sb-widget">#}
+{#						<div class="sb-video">#}
+{#							<img src="{% static 'img/video.jpg' %}" alt="">#}
+{#							<a href="https://www.youtube.com/watch?v=vgv-hzTl5FA" class="video-popup"><img src="{% static 'img/icons/play.png' %}" alt=""></a>#}
+{#						</div>#}
+{#					</div>#}
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Classes Section end -->
+
+
+
+{% endblock %}

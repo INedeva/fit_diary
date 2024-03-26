@@ -1,0 +1,35 @@
+ {%  extends 'base.html' %}
+
+{%  load static %}
+
+{%  block main_content %}
+
+
+	                                                                              
+	<!-- Page top Section -->
+	<section class="page-top-section set-bg" data-setbg="img/page-top-bg.jpg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-7 m-auto text-white">
+					<h2>Are you sure you want to delete your profile?</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+                    <form action="{% url 'delete-profile' object.pk %}" method="post">
+                        {%  csrf_token %}
+
+
+                        <button class="delete-btn" type="submit">Delete</button>
+
+                        <a class="btn" href="javascript:history.back()">
+                            <button class="edit-btn" type="button">Go back</button>
+                        </a>
+                    </form>
+
+
+                </div>
+			</div>
+		</div>
+	</section>
+	<!-- Page top Section end -->
+{% endblock %}
+

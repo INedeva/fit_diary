@@ -1,0 +1,148 @@
+ {%  extends 'base.html' %}
+
+{%  load static %}
+
+{%  block main_content %}
+
+
+	                                                                              
+	<!-- Page top Section -->
+	<section class="page-top-section set-bg" data-setbg="img/page-top-bg.jpg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-7 m-auto text-white">
+					<h2>Profile details</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Page top Section end -->
+
+
+{% endblock %}
+{% block additional_content %}
+
+	<!-- Profile Section -->
+	<section class="trainer-details-section spad overflow-hidden">
+		<div class="container">
+			<div class="trainer-details">
+				<div class="trainer-info">
+					<div class="td-left">
+
+                        {% if profile.profile_picture %}
+{#                            TODO: test it with picture #}
+                            <img src="{{ profile.profile_picture.url }}" alt="cannot load pic">
+                        {% else %}
+{#                          TODO: find generic image#}
+						    <img src="{%  static 'img/classes/1.jpg' %}" alt="">
+                        {%  endif %}
+
+						<div class="td-social">
+                            {% if profile.facebook_profile_url %}
+							<a href="{{ profile.facebook_profile_url }}"><i class="fa fa-facebook"></i></a>
+                            {% endif %}
+
+                            {% if profile.instagram_profile_url %}
+							<a href="{{ profile.instagram_profile_url }}"><i class="fa fa-instagram"></i></a>
+                            {% endif %}
+
+                            {% if profile.linkedin_profile_url %}
+							<a href="{{ profile.linkedin_profile_url }}"><i class="fa fa-linkedin"></i></a>
+                            {% endif %}
+						</div>
+					</div>
+
+					<div class="td-right">
+						<h3>{{ profile.full_name }}</h3>
+{#                        TODO: Add admin/Trainer/Newbie on the basis of date joined to be calculated#}
+						<h6>Trainer</h6>
+						<ul>
+
+							<li><strong>Email:</strong><p>{{ profile.user.email }}</p></li>
+                            <li><strong>Age:</strong><p>{{ profile.age }}</p></li>
+
+                            <li><strong>Fitness goals: </strong><p>{{ profile.fitness_goals }}</p></li>
+                            <li><strong>Goal Weight:</strong><p>{{ profile.goal_weight }}</p></li>
+                            <li><strong>Activity Level: </strong><p>{{ profile.activity_level }}</p></li>
+                            <li><strong>Allergies:</strong><p>{{ profile.dietary_restrictions }}</p></li>
+                            <li><strong>Diet:</strong><p>{{ profile.preferred_diet }}</p></li>
+
+{#                            TODO: Add biography in the model#}
+{#							<li><strong>Biography:</strong><p>Certification from the National Institute of Sports Medicine (NASM) USA. 25 years of sports training in the United States, Germany, Hong Kong, Malaysia, Singapore, and now Vietnam at California Fitness & Yoga Centers.</p></li>#}
+						</ul>
+{#                        TODO: To fix the link to Edit profile #}
+						<a href="#" class="site-btn sb-gradient">Edit Profile</a>
+					</div>
+				</div>
+				<div class="trainer-details-text">
+					<h3>About {{ profile.first_name }}</h3>
+					<p>Certification from the National Institute of Sports Medicine (NASM) USA. 25 years of sports training in the United States, Germany, Hong Kong, Malaysia, Singapore, and now Vietnam at California Fitness & Yoga Centers.</p>
+{#					TODO: Add users measurements#}
+                    <ul>
+{#                        TODO: to sresearch body indices different than BMI and other metrics /scores#}
+						<li><i class="material-icons">check_circle</i>Current Weight: </li>
+						<li><i class="material-icons">check_circle</i>To add all</li>
+						<li><i class="material-icons">check_circle</i>the metrics </li>
+						<li><i class="material-icons">check_circle</i>In the profile</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Trainers Section end -->
+
+{#	<!-- Gallery Section -->#}
+{#	<div class="gallery-section">#}
+{#		<div class="gallery-slider owl-carousel">#}
+{#			<div class="gs-item">#}
+{#				<img src="img/gallery/1.jpg" alt="">#}
+{#				<div class="gs-hover">#}
+{#					<i class="fa fa-instagram"></i>#}
+{#					<p>ahana.yoga</p>#}
+{#				</div>#}
+{#			</div>#}
+{#			<div class="gs-item">#}
+{#				<img src="img/gallery/2.jpg" alt="">#}
+{#				<div class="gs-hover">#}
+{#					<i class="fa fa-instagram"></i>#}
+{#					<p>ahana.yoga</p>#}
+{#				</div>#}
+{#			</div>#}
+{#			<div class="gs-item">#}
+{#				<img src="img/gallery/3.jpg" alt="">#}
+{#				<div class="gs-hover">#}
+{#					<i class="fa fa-instagram"></i>#}
+{#					<p>ahana.yoga</p>#}
+{#				</div>#}
+{#			</div>#}
+{#			<div class="gs-item">#}
+{#				<img src="img/gallery/4.jpg" alt="">#}
+{#				<div class="gs-hover">#}
+{#					<i class="fa fa-instagram"></i>#}
+{#					<p>ahana.yoga</p>#}
+{#				</div>#}
+{#			</div>#}
+{#			<div class="gs-item">#}
+{#				<img src="img/gallery/5.jpg" alt="">#}
+{#				<div class="gs-hover">#}
+{#					<i class="fa fa-instagram"></i>#}
+{#					<p>ahana.yoga</p>#}
+{#				</div>#}
+{#			</div>#}
+{#			<div class="gs-item">#}
+{#				<img src="img/gallery/6.jpg" alt="">#}
+{#				<div class="gs-hover">#}
+{#					<i class="fa fa-instagram"></i>#}
+{#					<p>ahana.yoga</p>#}
+{#				</div>#}
+{#			</div>#}
+{#		</div>#}
+{#	</div>#}
+{#	<!-- Gallery Section end -->#}
+
+
+	
+
+
+ {% endblock %}

@@ -1,0 +1,32 @@
+{%  extends 'base.html' %}
+
+{%  load static %}
+
+{%  block main_content %}
+
+
+
+    <div class="login-container">
+        <div class="login-content">
+            <h2 class="login-title">Fit Diary</h2>
+
+
+            <form action="{%  url 'register-user' %}" method="post" class="login-form">
+{#                TODO: to fix password validation rules to show prettier#}
+                {{ form.as_p}}
+                {% csrf_token %}
+
+                <button type="submit" class="site-btn sb-gradient">Register</button>
+            </form>
+
+
+        </div>
+        <div class="login-footer">
+
+
+            <p>Already have an account? <a href="{%  url 'login-user' %}?next={{ next }}" class="register-link">Log in</a></p>
+        </div>
+    </div>
+
+
+{% endblock %}

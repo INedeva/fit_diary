@@ -1,0 +1,98 @@
+{% load static %}
+
+
+<!-- Header Section -->
+	<header class="header-section">
+		<div class="header-top">
+			<div class="row m-0">
+				<div class="col-md-6 d-none d-md-block p-0">
+					<div class="header-info">
+						<i class="material-icons">map</i>
+						<p>184 Main Collins Street</p>
+					</div>
+					<div class="header-info">
+						<i class="material-icons">phone</i>
+						<p>(965) 436 3274</p>
+					</div>
+				</div>
+				<div class="col-md-6 text-left text-md-right p-0">
+					<div class="header-info d-none d-md-inline-flex">
+						<i class="material-icons">alarm_on</i>
+						<p>Mon - Fri:  6:30am - 07:45pm</p>
+					</div>
+					<div class="header-info">
+						<i class="material-icons">language</i>
+						<select id="language" class="language-select">
+							<option data-display="Language">EN</option>
+							<option data-display="Language" value="1">ES</option>
+							<option data-display="Language" value="2">JA</option>
+							<option data-display="Language" value="2">AR</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="header-bottom">
+
+			<a href="#" class="site-logo">
+
+				<img src="{% static 'img/icons/mandala.png' %}" alt="">
+
+{#                <a target="_blank" href="https://icons8.com/icon/LEabPHUx4Gpo/seed-of-life">mandala</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>#}
+			</a>
+            <ul class="main-menu hb-left"><li><a href="#" >FIT DIARY</a></li></ul>
+
+			<div class="hb-right">
+{#				<div class="hb-switch" id="search-switch">#}
+{#					<img src="{% static 'img/icons/search.png' %}" alt="">#}
+{#				</div>#}
+                <div class="hb-switch" >
+					<a href="#" >
+                        <img src="{% static 'img/icons/dashboard.png' %}" alt="" class="small-icon">
+                    </a>
+                </div>
+                <div class="hb-switch" >
+                    <a href="#" >
+                        <img src="{% static 'img/icons/profile.png' %}" alt="" class="small-icon">
+                    </a>
+                </div>
+				<div class="hb-switch" id="infor-switch">
+					<img src="{% static 'img/icons/bars.png' %}" alt="">
+				</div>
+
+			</div>
+			<div class="container">
+				<ul class="main-menu">
+					<li><a href="#" class="active">Home</a></li>
+{#                    <li><a href="#" class="active">Diary</a></li>#}
+
+					<li><a href="#">Workouts</a>
+						<ul class="sub-menu">
+							<li><a href="#">Our Workouts</a></li>
+							<li><a href="#">Workouts Details</a></li>
+						</ul>
+					</li>
+					<li><a href="#">Recipes</a>
+						<ul class="sub-menu">
+							<li><a href="#">Our Recipes</a></li>
+							<li><a href="#">Recipe Details</a></li>
+						</ul>
+					</li>
+{#					<li><a href="#">events</a>#}
+{#						<ul class="sub-menu">#}
+{#							<li><a href="#">Our Events</a></li>#}
+{#							<li><a href="#">Events Details</a></li>#}
+{#						</ul>#}
+{#					</li>#}
+{#					<li><a href="#">Blog</a>#}
+{#						<ul class="sub-menu">#}
+{#							<li><a href="#">Our Blog</a></li>#}
+{#							<li><a href="#">Blog Details</a></li>#}
+{#						</ul>#}
+{#					</li>#}
+					<li><a href="#">Contacts</a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+	<!-- Header Section end -->
