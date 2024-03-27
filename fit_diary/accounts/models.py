@@ -111,7 +111,7 @@ class Profile(models.Model):
     )
 
     profile_picture = models.ImageField(
-        upload_to='images/',
+        upload_to='images/profile_pictures/',
         blank=True,
         null=True,
     )
@@ -145,6 +145,11 @@ class Profile(models.Model):
         max_digits=5,
         decimal_places=2,
         help_text='Goal weight in kilograms',
+        null=True,
+        blank=True,
+    )
+    # TODO: Positive , also if added - track, if not do not show tracker
+    daily_calorie_goal = models.IntegerField(
         null=True,
         blank=True,
     )

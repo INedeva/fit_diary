@@ -2205,8 +2205,9 @@ only screen and (min-width: 576px) and (max-width: 767px),
 
 @media (max-width: 420px) {
 	.event-item .ei-img {
-		width: 100%;
-		float: none;
+		width: 222px;
+		float: left;
+		margin-right: 30px;
 	}
 }
 
@@ -3586,7 +3587,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 	margin-bottom: 30px;
 }
 
-.event-other-slider .event-item .ei-img {
+.event-other-slider .event-item {
 	width: 175px;
 	margin-right: 20px;
 }
@@ -3594,7 +3595,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 @media only screen and (min-width: 768px) and (max-width: 991px),
 only screen and (min-width: 992px) and (max-width: 1200px),
 (max-width: 420px) {
-	.event-other-slider .event-item .ei-img {
+	.event-other-slider .event-item  {
 		width: 100%;
 		float: none;
 	}
@@ -4397,4 +4398,27 @@ only screen and (min-width: 576px) and (max-width: 767px),
 .small-icon {
     width: 28px;
     height: 28px;
+}
+
+.category-heading {
+        background-image: linear-gradient(to right, #f65d5d, #fdb07d);
+        color: white; /* Adjust text color as needed */
+        padding: 10px; /* Adjust padding as needed */
+        border-radius: 5px; /* Optional: adds rounded corners */
+        margin-bottom: 20px; /* Space below the heading */
+        display: inline-block; /* Adjust display as needed */
+    }
+
+.event-item .ei-img {
+	width: 222px;
+	float: left;
+	margin-right: 30px;
+}
+
+@media (max-width: 420px) {
+	.event-item .ei-img {
+		width: 222px;
+		float: left;
+		margin-right: 30px;
+	}
 }

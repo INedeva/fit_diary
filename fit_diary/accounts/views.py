@@ -18,7 +18,7 @@ def index(request):
 class LoginUserView(LoginView):
     template_name = 'accounts/login-page.html'
     redirect_authenticated_user = True
-
+    success_url = reverse_lazy('index')
 
 class RegisterUserView(CreateView):
     form_class = FitDiaryUserCreationForm
