@@ -1,9 +1,12 @@
+from datetime import timedelta
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Value
+from django.db.models import Value, Q
 from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.timezone import now
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.db import models
 
@@ -143,71 +146,57 @@ class DiaryEntryDeleteView(DeleteView):
 # @login_required - TODO: add it later
 def diary_view(request):
     current_user = request.user
+    log_type = request.GET.get('log_type', '')
+    date_range = request.GET.get('date_range', '')
 
-    meals = MealEntry.objects.filter(user=current_user).annotate(
-        entry_type=Value('meal', output_field=models.CharField())
-    )
+    total_logs = 0
 
-    drinks = DrinkEntry.objects.filter(user=current_user).annotate(
-        entry_type=Value('drink', output_field=models.CharField())
-    )
+    meals = None
+    drinks = None
+    waters = None
 
-    waters = WaterIntakeEntry.objects.filter(user=current_user).annotate(
-        entry_type=Value('water', output_field=models.CharField())
-    )
+    # Initialize query filters
+    date_query = Q()
+    log_type_query = Q(user=current_user)  # Default to filtering by current user only
+
+    # Determine the date or date range for filtering
+    if date_range == 'today':
+        today = now().date()
+        date_query &= Q(created_at__date=today)
+    elif date_range == 'yesterday':
+        yesterday = now().date() - timedelta(days=1)
+        date_query &= Q(created_at__date=yesterday)
+    elif date_range == 'last_week':
+        last_week_start = now().date() - timedelta(days=7)
+        last_week_end = now().date()
+        date_query &= Q(created_at__date__range=(last_week_start, last_week_end))
+
+    # extract the querysets
+    if log_type == 'meal' or not log_type:
+        meals = MealEntry.objects.filter(log_type_query & date_query).annotate(
+            entry_type=Value('meal', output_field=models.CharField())
+        )
+        if meals:
+            total_logs += meals.count()
+    if log_type == 'drink' or not log_type:
+        drinks = DrinkEntry.objects.filter(log_type_query & date_query).annotate(
+            entry_type=Value('drink', output_field=models.CharField())
+        )
+        if drinks:
+            total_logs += drinks.count()
+    if log_type == 'water' or not log_type:
+        waters = WaterIntakeEntry.objects.filter(log_type_query & date_query).annotate(
+            entry_type=Value('water', output_field=models.CharField())
+        )
+        if waters:
+            total_logs += waters.count()
 
     context = {
         'meals': meals,
         'drinks': drinks,
         'waters': waters,
-        'total_logs': meals.count() + drinks.count() + waters.count(),
+        'total_logs': total_logs,
     }
 
     return render(request, 'diary/diary.html', context)
-
-
-# class DiaryView(ListView):
-#     # TODO: Add Login required mixin
-#     template_name = 'diary/diary.html'
-#     paginate_by = 6
-#
-#     def get_queryset(self):
-#         current_user = self.request.user
-#         meals = MealEntry.objects.filter(user=current_user).annotate(
-#             entry_type=Value('meal', output_field=models.CharField())
-#             ).values_list(
-#             'id', 'created_at', 'name', 'photo',
-#             'meal_type', 'calories',
-#             'quantity','unit', 'entry_type',
-#             named=True
-#         )
-#
-#         drinks = DrinkEntry.objects.filter(user=current_user).annotate(
-#             entry_type=Value('drink', output_field=models.CharField())
-#             ).values_list(
-#             'id', 'created_at', 'name', 'photo',
-#             'calories',
-#             'quantity', 'unit', 'entry_type',
-#             named=True
-#         )
-#
-#         waters = WaterIntakeEntry.objects.filter(user=current_user).annotate(
-#             entry_type=Value('water', output_field=models.CharField())
-#             ).values_list(
-#             'id', 'created_at',
-#             'quantity', 'unit', 'entry_type',
-#             named=True
-#         )
-#
-#         combined_list = list(meals) + list(drinks) + list(waters)
-#
-#         sorted_combined_list = sorted(combined_list, key=lambda x: x.created_at, reverse=True)
-#         return sorted_combined_list
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['total_logs'] = len(self.get_queryset())
-#
-#         return context
-
 

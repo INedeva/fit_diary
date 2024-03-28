@@ -36,42 +36,52 @@
 		</div>
 	</section>
 	<!-- Page top Section end -->
+    
 
-{#        Filter logs#}
-	<div class="container">
-		<div class="event-filter-warp">
-			<div class="row">
-				<div class="col-xl-3">
-{#                    TODO: fix this to work#}
-
-                    <p>Log count: {{ total_logs }} logs</p>
-				</div>
-				<div class="col-xl-9">
-					<form class="event-filter-form">
-						<div class="ef-item">
-							<input type="text" placeholder="Event Date" class="event-date">
-							<i class="material-icons">event_available</i>
-						</div>
-						<div class="ef-item">
-							<input type="text" placeholder="Search">
-							<i class="material-icons">search</i>
-						</div>
-						<div class="ef-item">
-							<input type="text" placeholder="Location">
-							<i class="material-icons">map</i>
-						</div>
-						<button class="site-btn sb-gradient">Find Event</button>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+    <div class="event-filter-warp">
+        <div class="row">
+            <div class="col-xl-3">
+                <p>Log count: {{ total_logs }}</p>
+            </div>
+            <div class="col-xl-9">
+                <form class="event-filter-form" method="get" action="">
+                    <div class="ef-item">
+                        <!-- Dropdown to select the date range -->
+                        <select name="date_range" >
+                            <option value="">Select Date</option>
+                            <option value="today" {% if request.GET.date_range == "today" %} selected {% endif %}>Today</option>
+                            <option value="yesterday" {% if request.GET.date_range == "yesterday" %} selected {% endif %}>Yesterday</option>
+                            <option value="last_week" {% if request.GET.date_range == "last_week" %} selected {% endif %}>Last Week</option>
+                        </select>
+                        <i class="material-icons">event_available</i>
+                    </div>
+                    <div class="ef-item">
+                        <!-- Dropdown to select the type of log -->
+                        <select name="log_type" >
+                            <option value="">Select Log Type</option>
+                            <option value="meal" {% if request.GET.log_type == "meal" %} selected {% endif %}>Meal</option>
+                            <option value="drink" {% if request.GET.log_type == "drink" %} selected {% endif %}>Drink</option>
+                            <option value="water" {% if request.GET.log_type == "water" %} selected {% endif %}>Water</option>
+                        </select>
+                    </div>
+                    <div class="ef-item">
+                    <button class="site-btn sb-gradient">Filter</button>
+                    </div>
+{#                    TODO: implement a way to clear filtration#}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 	<!-- Events Section -->
 	<section class="events-page-section spad">
 		<div class="container">
 {#			<div class="row">#}
+
+                {%  if meals %}
 
                 <!-- Meals Section -->
 {#            <div class="col-md-4">#}
@@ -115,6 +125,9 @@
                 {% endfor %}
             </div>
 
+        {%  endif %}
+
+        {%  if drinks %}
                     <!-- Drinks Column -->
 {#            <div class="col-md-4">#}
                 <h3 class="category-heading">Drinks</h3>
@@ -153,7 +166,9 @@
 
                 {% endfor %}
             </div>
+        {%  endif %}
 
+        {%  if waters %}
             <!-- Water Column -->
 {#            <div class="col-md-4">#}
                 <h3 class="category-heading">Water</h3>
@@ -194,7 +209,7 @@
                 {% endfor %}
 
 			</div>
-
+            {%  endif %}
 {#			<div class="site-pagination pt-3">#}
 {#				<a href="#" class="active">1</a>#}
 {#				<a href="#">2</a>#}
