@@ -8,7 +8,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.timezone import now
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.db import models
 
 from fit_diary.diary.forms import MealEntryForm, DrinkEntryForm, WaterIntakeEntryForm, MealEntryDeleteForm, \
@@ -16,9 +16,7 @@ from fit_diary.diary.forms import MealEntryForm, DrinkEntryForm, WaterIntakeEntr
 from fit_diary.diary.models import MealEntry, DrinkEntry, WaterIntakeEntry
 
 
-# TODO: add login required mixin
-# class DiaryEntryCreateView(LoginRequiredMixin, CreateView):
-class DiaryEntryCreateView(CreateView):
+class DiaryEntryCreateView(LoginRequiredMixin, CreateView):
     template_name = 'diary/create-diary-record.html'
     success_url = reverse_lazy('diary')
 
@@ -51,7 +49,6 @@ class DiaryEntryCreateView(CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
-        print(self.request.user)  # TODO: for debug - remove later
         form.instance.user = self.request.user
         return form
 
@@ -59,8 +56,7 @@ class DiaryEntryCreateView(CreateView):
         return self.get_model().objects.all()
 
 
-# TODO: LoginRequiredMixin
-class DiaryEntryEditView(UpdateView):
+class DiaryEntryEditView(LoginRequiredMixin, UpdateView):
     template_name = 'diary/edit-diary-record.html'
     success_url = reverse_lazy('diary')
 
@@ -88,7 +84,7 @@ class DiaryEntryEditView(UpdateView):
 
     # def get_form(self, form_class=None):
     #     form = super().get_form(form_class=form_class)
-    #     print(self.request.user)  # TODO: for debug - remove later
+    #     print(self.request.user)
     #     form.instance.user = self.request.user
     #     return form
 
@@ -99,8 +95,7 @@ class DiaryEntryEditView(UpdateView):
         return self.get_model().objects.all()
 
 
-# TODO: LoginRequiredMixin
-class DiaryEntryDeleteView(DeleteView):
+class DiaryEntryDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'diary/delete-diary-record.html'
     success_url = reverse_lazy('diary')
 
@@ -126,12 +121,6 @@ class DiaryEntryDeleteView(DeleteView):
         else:
             raise Http404("Model not found")
 
-    # def get_form(self, form_class=None):
-    #     form = super().get_form(form_class=form_class)
-    #     print(self.request.user)  # TODO: for debug - remove later
-    #     form.instance.user = self.request.user
-    #     return form
-
     # def get_object(self, queryset=None):
     #     pass
 
@@ -145,6 +134,8 @@ class DiaryEntryDeleteView(DeleteView):
 
 
 def calc_remaining_calories(request):
+    DEFAULT_CALORIE_GOAL = 200
+
     total_calories = 0
 
     date_query = Q(created_at__date=now().date())
@@ -163,13 +154,13 @@ def calc_remaining_calories(request):
         total_calories += drinks.aggregate(total_calories=Coalesce(Sum('calories'), 0))['total_calories']
 
     # Get the daily calorie goal for the user or default
-    # TODO: get the default in an CONSTANT
-    daily_goal = request.user.profile.daily_calorie_goal or 2000
+    daily_goal = request.user.profile.daily_calorie_goal or DEFAULT_CALORIE_GOAL
 
     # Calculate remaining calories
     remaining_calories = daily_goal - total_calories
 
     return remaining_calories
+
 
 def calc_water_consumption_in_liters(request):
     total_water = 0
@@ -186,9 +177,10 @@ def calc_water_consumption_in_liters(request):
     return total_water
 
 
-# @login_required - TODO: add it later
+@login_required
 def diary_view(request):
     current_user = request.user
+
     remaining_calories = calc_remaining_calories(request)
     water_consumption = calc_water_consumption_in_liters(request)
 
@@ -203,7 +195,7 @@ def diary_view(request):
 
     # Initialize query filters
     date_query = Q()
-    log_type_query = Q(user=current_user)  # Default to filtering by current user only
+    log_type_query = Q(user=current_user)
 
     # Determine the date or date range for filtering
     if date_range == 'today':

@@ -38,8 +38,8 @@ class DiaryEntry(models.Model):
 
 
 class FoodEntry(DiaryEntry):
-    # TODO: Make this FLOAT
-    quantity = models.PositiveIntegerField(
+    # TODO: Make this positive
+    quantity = models.FloatField(
         blank=True,
         null=True,
     )
@@ -55,15 +55,18 @@ class FoodEntry(DiaryEntry):
 
 
 class MealEntry(FoodEntry):
+    MAX_NAME_LENGTH = 100
+    MAX_MEAL_TYPE_LENGTH = 20
+
     name = models.CharField(
-        max_length=100,
+        max_length=MAX_NAME_LENGTH,
     )
     meal_type = models.CharField(
-        # TODO : Do not hardcode max-length
-        max_length=20,
+        max_length=MAX_MEAL_TYPE_LENGTH,
         choices=MealType.choices,
         default=MealType.BREAKFAST,
     )
+
     calories = models.PositiveIntegerField(
         blank=True,
         null=True,
@@ -74,7 +77,9 @@ class MealEntry(FoodEntry):
         null=True,
     )
 
-    # TODO: To overwrite the default __str__method for all models
+# TODO: add __str__ for all models
+    def __str__(self):
+        return f"{self.name} ({self.meal_type}){(', calories: ' + str(self.calories)) if self.calories else ''}"
 
 
 class DrinkEntry(FoodEntry):
@@ -91,7 +96,8 @@ class DrinkEntry(FoodEntry):
         null=True,
     )
 
-    # TODO: To overwrite the default __str__method for all models
+    def __str__(self):
+        return f"{self.name}{(', calories: ' + str(self.calories)) if self.calories else ''}"
 
 
 class WaterIntakeEntry(FoodEntry):
@@ -100,4 +106,5 @@ class WaterIntakeEntry(FoodEntry):
         choices=((Unit.LITERS, Unit.LITERS),),
     )
 
-    # TODO: To overwrite the default __str__method for all models
+    def __str__(self):
+        return f"Water Intake: {self.quantity}{self.unit}"

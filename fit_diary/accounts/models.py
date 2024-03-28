@@ -5,9 +5,8 @@ from django.utils import timezone
 from django.db import models
 
 from fit_diary.accounts.managers import FitDiaryUserManager
+# TODO: extra validation everywhere
 
-
-# Create your models here.
 
 class FitDiaryUser(AbstractBaseUser, PermissionsMixin):
 
@@ -15,7 +14,7 @@ class FitDiaryUser(AbstractBaseUser, PermissionsMixin):
         _('email address'),
         unique=True,
         error_messages={
-            "unique":_("TA user with that email already exists."),
+            "unique": _("TA user with that email already exists."),
         },
     )
     is_staff = models.BooleanField(
@@ -36,55 +35,47 @@ class FitDiaryUser(AbstractBaseUser, PermissionsMixin):
     objects = FitDiaryUserManager()
     USERNAME_FIELD = "email"
 
-# TODO: to fix text choices
+
+class FitnessGoals(models.TextChoices):
+    LOSE_WEIGHT = 'Lose weight'
+    GAIN_MUSCLE = 'Gain muscle'
+    BUILD_ENDURANCE = 'Build endurance'
+    IMPROVE_FLEXIBILITY = 'Improve flexibility'
+    INCREASE_STRENGTH = 'Increase strength'
+
+
+class ActivityLevel(models.TextChoices):
+    SEDENTARY = 'Sedentary'
+    LIGHTLY_ACTIVE = 'Lightly Active'
+    MODERATELY_ACTIVE = 'Moderately Active'
+    VERY_ACTIVE = 'Very Active'
+    EXTRA_ACTIVE = 'Extra Active'
+
+
+class DietaryRestrictions(models.TextChoices):
+    NONE = 'None'
+    GLUTEN_FREE = 'Gluten-Free'
+    DAIRY_FREE = 'Dairy-Free'
+    NUT_FREE = 'Nut-Free'
+    SUGAR_FREE = 'Sugar-Free'
+
+
+class PreferredDiet(models.TextChoices):
+    BALANCED = 'Balanced'
+    HIGH_PROTEIN = 'High-Protein'
+    LOW_CARB = 'Low-Carb'
+    VEGAN = 'Vegan'
+    VEGETARIAN = 'Vegetarian'
+    KETO = 'Keto'
 
 
 class Profile(models.Model):
     MAX_FIRST_NAME_LENGTH = 30
     MAX_LAST_NAME_LENGTH = 30
-    MAX_GENDER_LENGTH = 20
     MAX_FITNESS_GOALS_LENGTH = 50
     MAX_ACTIVITY_LEVEL_LENGTH = 50
-    MAX_DIETARY_RESTRICTIONS_LENGTH = 100
-    MAX_PREFERRED_DIET_LENGTH = 50
-
-    GENDERS = (
-            ('Male', 'Male'),
-            ('Female', 'Female'),
-            ('Other', 'Other'),
-    )
-
-    FITNESS_GOALS = (
-        ('Lose weight', 'Lose weight'),
-        ('Gain muscle', 'Gain muscle'),
-        ('Build endurance', 'Build endurance'),
-        ('Improve flexibility', 'Improve flexibility'),
-        ('Increase strength', 'Increase strength'),
-    )
-    ACTIVITY_LEVEL = (
-        ('Sedentary', 'Sedentary'),
-        ('Lightly Active', 'Lightly Active'),
-        ('Moderately Active', 'Moderately Active'),
-        ('Very Active', 'Very Active'),
-        ('Extra Active', 'Extra Active')
-    )
-
-    DIETARY_RESTRICTIONS = (
-        ('None', 'None'),
-        ('Gluten-Free', 'Gluten-Free'),
-        ('Dairy-Free', 'Dairy-Free'),
-        ('Nut-Free', 'Nut-Free'),
-        ('Sugar-Free', 'Sugar-Free'),
-    )
-
-    PREFERRED_DIET = (
-        ('Balanced', 'Balanced'),
-        ('High-Protein', 'High-Protein'),
-        ('Low-Carb', 'Low-Carb'),
-        ('Vegan', 'Vegan'),
-        ('Vegetarian', 'Vegetarian'),
-        ('Keto', 'Keto')
-    )
+    MAX_DIETARY_RESTRICTIONS_LENGTH = 15
+    MAX_PREFERRED_DIET_LENGTH = 15
 
     first_name = models.CharField(
         max_length=MAX_FIRST_NAME_LENGTH,
@@ -101,13 +92,6 @@ class Profile(models.Model):
     age = models.PositiveIntegerField(
         null=True,
         blank=True
-    )
-
-    gender = models.CharField(
-        max_length=MAX_GENDER_LENGTH,
-        choices=GENDERS,
-        blank=True,
-        null=True
     )
 
     profile_picture = models.ImageField(
@@ -136,10 +120,11 @@ class Profile(models.Model):
 
     fitness_goals = models.CharField(
         max_length=MAX_FITNESS_GOALS_LENGTH,
-        choices=FITNESS_GOALS,
+        choices=FitnessGoals.choices,
         blank=True,
         null=True,
-        help_text='Your primary fitness goal')
+        help_text='Your primary fitness goal'
+    )
 
     goal_weight = models.DecimalField(
         max_digits=5,
@@ -148,22 +133,22 @@ class Profile(models.Model):
         null=True,
         blank=True,
     )
-    # TODO: Positive , also if added - track, if not do not show tracker
-    daily_calorie_goal = models.IntegerField(
+
+    daily_calorie_goal = models.PositiveIntegerField(
         null=True,
         blank=True,
     )
 
     activity_level = models.CharField(
         max_length=MAX_ACTIVITY_LEVEL_LENGTH,
-        choices=ACTIVITY_LEVEL,
+        choices=ActivityLevel.choices,
         blank=True,
         null=True
     )
 
     dietary_restrictions = models.CharField(
         max_length=MAX_DIETARY_RESTRICTIONS_LENGTH,
-        choices=DIETARY_RESTRICTIONS,
+        choices=DietaryRestrictions.choices,
         help_text='Any health restrictions',
         blank=True,
         default='None',
@@ -171,7 +156,7 @@ class Profile(models.Model):
 
     preferred_diet = models.CharField(
         max_length=MAX_PREFERRED_DIET_LENGTH,
-        choices=PREFERRED_DIET,
+        choices=PreferredDiet.choices,
         blank=True,
         null=True,
         default='Balanced',

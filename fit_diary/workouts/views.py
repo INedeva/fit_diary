@@ -13,14 +13,14 @@ class WorkoutCreateView(CreateView):
     model = Workout
     fields = "__all__"
     template_name = 'workouts/create-workout.html'
-    success_url = reverse_lazy('index')  # TODO: fix url
+    success_url = reverse_lazy('list-workout')
 
 
 class WorkoutEditView(UpdateView):
     model = Workout
     fields = "__all__"
     template_name = 'workouts/edit-workout.html'
-    success_url = reverse_lazy('index')  # TODO: fix url
+    success_url = reverse_lazy('list-workout')
 
 
 class WorkoutListView(ListView):
@@ -79,7 +79,7 @@ class WorkoutDeleteView(DeleteView):
     form_class = WorkoutDeleteForm
 
     template_name = 'workouts/delete-workout.html'
-    success_url = reverse_lazy('index')   # TODO: fix url
+    success_url = reverse_lazy('list-workout')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

@@ -7,18 +7,17 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from fit_diary.accounts.forms import FitDiaryUserCreationForm, ProfileEditForm
 from fit_diary.accounts.models import Profile
 
-# Create your views here.
 
 class LoginUserView(LoginView):
     template_name = 'accounts/login-page.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('diary')
 
 
 class RegisterUserView(CreateView):
     form_class = FitDiaryUserCreationForm
     template_name = 'accounts/register-page.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('diary')
 
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -44,11 +43,6 @@ class ProfileEditView(UpdateView):
     def get_success_url(self):
         return reverse("details-profile", kwargs={"pk":self.object.pk,})
 
-    # def get_form(self, form_class=None):
-    #     form = super().get_form(form_class=form_class)
-    #     form.fields['date_of_birth'].widget.attrs['type'] = 'date'
-    #     return form
-
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
@@ -57,4 +51,5 @@ class ProfileEditView(UpdateView):
 class ProfileDeleteView(DeleteView):
     queryset = Profile.objects.all()
     template_name = 'accounts/delete-profile.html'
-    success_url = reverse_lazy('register-user')  # TODO: redirect to index ?
+    success_url = reverse_lazy('index')
+    # TODO: to ask should not we delete the user not the profile ?

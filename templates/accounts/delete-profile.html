@@ -6,13 +6,14 @@
 
     <section class="hero-section">
 	<!-- Page top Section -->
-{#	<section class="page-top-section set-bg" data-setbg="img/page-top-bg.jpg">#}
 		<div class="container ">
 			<div class="row">
 				<div class="col-lg-7 m-auto text-white">
 					<h2>Are you sure you want to delete your profile?</h2>
-{#                    TODO: Add proper text#}
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+                    <p>Deleting your profile is a permanent action that cannot be undone. By choosing to delete your profile, you will lose access to all your account information, preferences, and any content you've created or uploaded. </p>
+                    <p>Please consider that this action will also remove your personal data from our platform. If you're sure you want to continue, please confirm your decision by clicking the 'Delete' button below. Otherwise, you can choose to go back and keep your profile active.</p>
+
 
                     <form action="{% url 'delete-profile' object.pk %}" method="post" class="signup-form login-form">
                         {%  csrf_token %}
@@ -24,13 +25,7 @@
                         <a  href="javascript:history.back()">
                             <button class="btn-custom btn-edit" type="button">Go back</button>
                         </a>
-
-
-
-
-
                     </form>
-
 
                 </div>
 			</div>

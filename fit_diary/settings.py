@@ -164,8 +164,7 @@ LOGGING = {
 }
 
 AUTH_USER_MODEL = 'accounts.FitDiaryUser'
-# TODO: fix settings
 
 LOGIN_REDIRECT_URL = reverse_lazy('index')
-# LOGIN_URL = reverse_lazy('signin-user')
+LOGIN_URL = reverse_lazy('login-user')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
