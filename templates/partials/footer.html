@@ -7,61 +7,60 @@
 				<div class="col-lg-3 col-sm-6">
 					<div class="footer-widget">
 						<div class="about-widget">
-							<img src="{% static 'img/logo-3.png' %}" alt="">
-							<p>Lorem ipsum dolor sit amet, consec-tetur adipiscing elit sed.</p>
+							<img src="{% static 'img/icons/logo-icon.png' %}" alt="">
+							<p>Special thanks to pexels.com and icons8.com for the images and icons.</p>
 							<ul>
-								<li><i class="material-icons">phone</i>(965) 436 3274</li>
-								<li><i class="material-icons">email</i>ahana.yoga@gmail.com</li>
-								<li><i class="material-icons">map</i>184 Main Collins Street</li>
+								<li><i class="material-icons">phone</i>0897/ 214-209</li>
+								<li><i class="material-icons">email</i>ilina.nedeva94@gmail.com</li>
+								<li><i class="material-icons">map</i>Varna, Bulgaria</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-3 col-sm-6">
 					<div class="footer-widget pl-0 pl-lg-5">
-						<h2 class="fw-title">Company</h2>
+						<h2 class="fw-title">Diary links</h2>
 						<ul>
-							<li><a href="#">Online Education</a></li>
-							<li><a href="#">Gallery</a></li>
-							<li><a href="#">Special Issues</a></li>
-							<li><a href="#">Privacy Policy</a></li>
-							<li><a href="#">Contact Us</a></li>
+							<li><a href="{% url 'diary' %}">Diary</a></li>
+							<li><a href="{% url 'log-diary' %}?entry_type=meal">Log meal</a></li>
+							<li><a href="{% url 'log-diary' %}?entry_type=drink">Log drink</a></li>
+							<li><a href="{% url 'log-diary' %}?entry_type=water">Log water</a></li>
+
 						</ul>
 					</div>
 				</div>
 				<div class="col-lg-2 col-sm-6">
 					<div class="footer-widget">
-						<h2 class="fw-title">About Us</h2>
+						<h2 class="fw-title">Workouts</h2>
 						<ul>
-							<li><a href="#">Our Vision</a></li>
-							<li><a href="#">Our Mission</a></li>
-							<li><a href="#">Meet The Team</a></li>
-							<li><a href="#">Introduce</a></li>
-							<li><a href="#">Customer Service</a></li>
+							<li><a href="{% url 'list-workout' %}">Workouts</a></li>
+							<li><a href="{% url 'create-workout' %}">Create Workout</a></li>
+
 						</ul>
 					</div>
 				</div>
+
+
+
 				<div class="col-lg-4 col-sm-6">
 					<div class="footer-widget pl-0 pl-lg-5">
-						<h2 class="fw-title">Open time</h2>
+						<h2 class="fw-title">About us</h2>
 						<ul>
-							<li><i class="material-icons">alarm_on</i>Mon - Fri:  6:30am - 07:45pm</li>
-							<li><i class="material-icons">alarm_on</i>Sat - Sun:  8:30am - 05:45pm</li>
+							<li><a href="{%  url 'index' %}">Home</a></li>
+                            <li><a href="{%  url 'about' %}">About</a></li>
+							<li><a href="{%  url 'contacts' %}">Contacts</a></li>
 						</ul>
-						<form class="infor-form">
-							<input type="text" placeholder="Your Email">
-							<button><img src="{% static 'img/icons/send.png' %}" alt=""></button>
-						</form>
+
 					</div>
 				</div>
 			</div>
+
 			<div class="footer-bottom">
 				<div class="row">
 					<div class="col-md-4">
 						<div class="footer-social">
+{#                            TODO: Add links#}
 							<a href="#"><i class="fa fa-facebook"></i></a>
-{#							<a href="#"><i class="fa fa-instagram"></i></a>#}
-{#							<a href="#"><i class="fa fa-twitter"></i></a>#}
 							<a href="#"><i class="fa fa-linkedin"></i></a>
 						</div>
 					</div>
@@ -78,17 +77,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 	<div class="back-to-top"><img src="{% static 'img/icons/up-arrow.png' %}" alt=""></div>
 
-	<!-- Search model -->
-{#	<div class="search-model set-bg" data-setbg="img/search-bg.jpg">#}
-{#		<div class="h-100 d-flex align-items-center justify-content-center">#}
-{#			<div class="search-close-switch"><i class="material-icons">close</i></div>#}
-{#			<form class="search-moderl-form">#}
-{#				<input type="text" id="search-input" placeholder="Search">#}
-{#				<button><img src="{% static 'img/icons/search-2.png' %}" alt=""></button>#}
-{#			</form>#}
-{#		</div>#}
-{#	</div>#}
-{#	<!-- Search model end -->#}
+
 
 	<!--====== Javascripts & Jquery ======-->
 	<script src="{% static 'js/vendor/jquery-3.2.1.min.js' %}"></script>
@@ -100,5 +89,4 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 
-	</body>
-</html>
+

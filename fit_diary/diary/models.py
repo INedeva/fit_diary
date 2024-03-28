@@ -38,6 +38,7 @@ class DiaryEntry(models.Model):
 
 
 class FoodEntry(DiaryEntry):
+    # TODO: Make this FLOAT
     quantity = models.PositiveIntegerField(
         blank=True,
         null=True,
@@ -94,5 +95,9 @@ class DrinkEntry(FoodEntry):
 
 
 class WaterIntakeEntry(FoodEntry):
-    pass
+    unit = models.CharField(
+        max_length=20,
+        choices=((Unit.LITERS, Unit.LITERS),),
+    )
+
     # TODO: To overwrite the default __str__method for all models

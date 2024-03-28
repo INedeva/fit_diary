@@ -2,8 +2,16 @@
 {%  load static %}
 {% block main_content %}
 
+
+    <!-- Page top Section -->
+	<section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg" style="height: 250px">
+
+	</section>
+	<!-- Page top Section end -->
+
 	<!-- Classes Section -->
-	<section class="classes-page-section spad overflow-hidden">
+{#    TODO: add create button#}
+	<section class="classes-page-section spad overflow-hidden" style="padding-top: 20px;">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-9">
@@ -44,12 +52,13 @@
 							<div class="classes-item-warp">
 								<div class="classes-item">
 									<div class="ci-img">
+{#                                        TODO: fix this to be dynamic for every entry, and add a placeholder#}
 {#										<img src="{% static 'img/classes/1.jpg' %}" alt="">#}
 {#                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>#}
                                         <iframe src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 									</div>
 									<div class="ci-text">
-										<h4>{{ obj.name }}</h4>
+										<h4><a href="{% url 'details-workout' obj.pk %}">{{ obj.name }}</a></h4>
 										<div class="ci-metas">
 {#                                            TODO: Add more suitable icons#}
 											<div class="ci-meta"><i class="material-icons">event_available</i>{{ obj.type }}</div>
@@ -62,15 +71,11 @@
 
 									<div class="ci-bottom">
 										<div class="ci-author">
-{#											<img src="{%  static 'img/classes/author/1.jpg' %}" alt="">#}
-{#											<div class="author-text">#}
-{#												<h6>Victoria Webb</h6>#}
-{#												<p>Yoga Trainer</p>#}
-{#											</div>#}
-                                            <a href="" class="site-btn sb-gradient">edit</a>
+
+                                            <a href="{% url 'edit-workout' obj.pk %}" class="site-btn sb-gradient">edit</a>
 										</div>
 
-                                        <a href="" class="site-btn sb-gradient">delete</a>
+                                        <a href="{%  url 'delete-workout' obj.pk %}" class="site-btn sb-gradient">delete</a>
 
 									</div>
 
@@ -84,13 +89,8 @@
 
 
 					</div>
-{#                TODO: Add pagination#}
-{#					<div class="site-pagination pt-3">#}
-{#						<a href="#" class="active">1</a>#}
-{#						<a href="#">2</a>#}
-{#						<a href="#"><i class="material-icons">keyboard_arrow_right</i></a>#}
-{#					</div>#}
-
+{#                TODO: Add "empty result notificaton#}
+                    {% if object_list %}
                     <div class="site-pagination pt-3">
                         {% if page_obj.has_previous %}
                             <a href="?page=1">&laquo; </a>
@@ -111,7 +111,7 @@
                         {% endif %}
                     </div>
 
-
+                    {% endif %}
 
 				</div>
 

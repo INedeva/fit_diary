@@ -2,10 +2,12 @@
 {%  load static %}
 {% block main_content %}
 
-
-     {#    <section class="trainer-details-section spad overflow-hidden">#}
+<section class="hero-section">
+{#     TODO: to fix forms layout and placehoders#}
                 <div class="container">
-                    <div class="trainer-details">
+                    <div class="trainer-details login-container">
+                        <h2>Edit Workout</h2>
+                        <br>
         {#           TODO: To revise the classes#}
                         <form action="{%  url 'edit-workout' object.pk %}" method="post" class="login-form" >
 
@@ -16,7 +18,7 @@
                         </form>
                     </div>
                 </div>
-        {#	</section>#}
+        	</section>
 
 
 {% endblock %}

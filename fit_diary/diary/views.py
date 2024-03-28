@@ -2,7 +2,8 @@ from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Value, Q
+from django.db.models import Value, Q, Sum
+from django.db.models.functions import Coalesce
 from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -143,9 +144,54 @@ class DiaryEntryDeleteView(DeleteView):
         return kwargs
 
 
+def calc_remaining_calories(request):
+    total_calories = 0
+
+    date_query = Q(created_at__date=now().date())
+    log_type_query = Q(user=request.user)
+
+    meals = MealEntry.objects.filter(log_type_query & date_query)
+    drinks = DrinkEntry.objects.filter(log_type_query & date_query)
+
+    if meals:
+        total_calories += meals.aggregate(total_calories=Coalesce(Sum('calories'), 0))['total_calories']
+
+    if drinks:
+        # Coalesce() is a Django function that returns the first non - null expression among its arguments.
+        # In this context, Coalesce() ensures that even if there are no entries
+        # for meals, the expression doesn't return None, but instead returns 0.
+        total_calories += drinks.aggregate(total_calories=Coalesce(Sum('calories'), 0))['total_calories']
+
+    # Get the daily calorie goal for the user or default
+    # TODO: get the default in an CONSTANT
+    daily_goal = request.user.profile.daily_calorie_goal or 2000
+
+    # Calculate remaining calories
+    remaining_calories = daily_goal - total_calories
+
+    return remaining_calories
+
+def calc_water_consumption_in_liters(request):
+    total_water = 0
+
+    date_query = Q(created_at__date=now().date())
+    log_type_query = Q(user=request.user)
+
+    water = WaterIntakeEntry.objects.filter(log_type_query & date_query)
+
+    if water:
+
+        total_water += water.aggregate(total_water=Coalesce(Sum('quantity'), 0))['total_water']
+
+    return total_water
+
+
 # @login_required - TODO: add it later
 def diary_view(request):
     current_user = request.user
+    remaining_calories = calc_remaining_calories(request)
+    water_consumption = calc_water_consumption_in_liters(request)
+
     log_type = request.GET.get('log_type', '')
     date_range = request.GET.get('date_range', '')
 
@@ -171,19 +217,21 @@ def diary_view(request):
         last_week_end = now().date()
         date_query &= Q(created_at__date__range=(last_week_start, last_week_end))
 
-    # extract the querysets
+    # extract the querysets if there is no filtration or filter is matching the type
     if log_type == 'meal' or not log_type:
         meals = MealEntry.objects.filter(log_type_query & date_query).annotate(
             entry_type=Value('meal', output_field=models.CharField())
         )
         if meals:
             total_logs += meals.count()
+
     if log_type == 'drink' or not log_type:
         drinks = DrinkEntry.objects.filter(log_type_query & date_query).annotate(
             entry_type=Value('drink', output_field=models.CharField())
         )
         if drinks:
             total_logs += drinks.count()
+
     if log_type == 'water' or not log_type:
         waters = WaterIntakeEntry.objects.filter(log_type_query & date_query).annotate(
             entry_type=Value('water', output_field=models.CharField())
@@ -196,6 +244,8 @@ def diary_view(request):
         'drinks': drinks,
         'waters': waters,
         'total_logs': total_logs,
+        'remaining_calories': remaining_calories,
+        'water_consumption': water_consumption,
     }
 
     return render(request, 'diary/diary.html', context)

@@ -4,11 +4,13 @@
 
 
 	<!-- Page top Section -->
-	<section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg">
+	<section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg" style="height: 400px">
+
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-7 m-auto text-white">
-					<h2>FIT Diary</h2>
+
+					<h2>FIT Diary </h2>
 
 
 
@@ -36,45 +38,56 @@
 		</div>
 	</section>
 	<!-- Page top Section end -->
-    
 
-    <div class="container">
-    <div class="event-filter-warp">
-        <div class="row">
-            <div class="col-xl-3">
-                <p>Log count: {{ total_logs }}</p>
-            </div>
-            <div class="col-xl-9">
-                <form class="event-filter-form" method="get" action="">
-                    <div class="ef-item">
-                        <!-- Dropdown to select the date range -->
-                        <select name="date_range" >
-                            <option value="">Select Date</option>
-                            <option value="today" {% if request.GET.date_range == "today" %} selected {% endif %}>Today</option>
-                            <option value="yesterday" {% if request.GET.date_range == "yesterday" %} selected {% endif %}>Yesterday</option>
-                            <option value="last_week" {% if request.GET.date_range == "last_week" %} selected {% endif %}>Last Week</option>
-                        </select>
-                        <i class="material-icons">event_available</i>
-                    </div>
-                    <div class="ef-item">
-                        <!-- Dropdown to select the type of log -->
-                        <select name="log_type" >
-                            <option value="">Select Log Type</option>
-                            <option value="meal" {% if request.GET.log_type == "meal" %} selected {% endif %}>Meal</option>
-                            <option value="drink" {% if request.GET.log_type == "drink" %} selected {% endif %}>Drink</option>
-                            <option value="water" {% if request.GET.log_type == "water" %} selected {% endif %}>Water</option>
-                        </select>
-                    </div>
-                    <div class="ef-item">
+
+
+
+
+
+   <div class="container" style="padding-top: 20px;">
+    <div class="stats-and-filter">
+        <div class="stats-section" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-bottom: 30px; border-bottom: 2px solid #eee;">
+{#            TODO: fix the hardcoded values#}
+            <!-- Stats buttons -->
+            <button type="button" class="site-btn" style="width: 194px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
+                Log Count <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ total_logs }}</span>
+            </button>
+            <button type="button" class="site-btn" style="width: 300px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
+                Remaining Calories <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ remaining_calories }}</span>
+            </button>
+            <button type="button" class="site-btn" style="width: 194px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
+                Water <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ water_consumption }}l</span>
+            </button>
+        </div>
+        <!-- Filtration form -->
+        <div class="filter-section" style="padding-top: 30px; display: flex; justify-content: center; align-items: center;">
+            <form class="event-filter-form" method="get" action="" style="display: flex; align-items: center;">
+                <div class="ef-item" style="margin-right: 10px;">
+                    <select name="date_range" style="margin-right: 10px;">
+                        <option value="">Select Date</option>
+                        <option value="today" {% if request.GET.date_range == "today" %} selected {% endif %}>Today</option>
+                        <option value="yesterday" {% if request.GET.date_range == "yesterday" %} selected {% endif %}>Yesterday</option>
+                        <option value="last_week" {% if request.GET.date_range == "last_week" %} selected {% endif %}>Last Week</option>
+                    </select>
+                </div>
+                <div class="ef-item" style="margin-right: 10px;">
+                    <select name="log_type" style="margin-right: 10px;">
+                        <option value="">Select Log Type</option>
+                        <option value="meal" {% if request.GET.log_type == "meal" %} selected {% endif %}>Meal</option>
+                        <option value="drink" {% if request.GET.log_type == "drink" %} selected {% endif %}>Drink</option>
+                        <option value="water" {% if request.GET.log_type == "water" %} selected {% endif %}>Water</option>
+                    </select>
+                </div>
+                <div class="ef-item" style="margin-right: 10px;">
                     <button class="site-btn sb-gradient">Filter</button>
-                    </div>
-{#                    TODO: implement a way to clear filtration#}
-                </form>
-            </div>
+                </div>
+                <div class="ef-item">
+                    <a href="{% url 'diary' %}" ><button class="site-btn sb-gradient" type="button">Clear Filter</button></a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
 
 	<!-- Events Section -->
 	<section class="events-page-section spad">

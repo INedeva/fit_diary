@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'fit_diary.accounts',
     'fit_diary.workouts',
     'fit_diary.diary',
+    'fit_diary.common',
 ]
 
 MIDDLEWARE = [

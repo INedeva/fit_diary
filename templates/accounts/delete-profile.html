@@ -4,25 +4,31 @@
 
 {%  block main_content %}
 
-
-	                                                                              
+    <section class="hero-section">
 	<!-- Page top Section -->
-	<section class="page-top-section set-bg" data-setbg="img/page-top-bg.jpg">
-		<div class="container">
+{#	<section class="page-top-section set-bg" data-setbg="img/page-top-bg.jpg">#}
+		<div class="container ">
 			<div class="row">
 				<div class="col-lg-7 m-auto text-white">
 					<h2>Are you sure you want to delete your profile?</h2>
+{#                    TODO: Add proper text#}
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 
-                    <form action="{% url 'delete-profile' object.pk %}" method="post">
+                    <form action="{% url 'delete-profile' object.pk %}" method="post" class="signup-form login-form">
                         {%  csrf_token %}
 
 
-                        <button class="delete-btn" type="submit">Delete</button>
+                        <button class="btn-custom btn-delete" type="submit">Delete</button>
+                        <br>
 
-                        <a class="btn" href="javascript:history.back()">
-                            <button class="edit-btn" type="button">Go back</button>
+                        <a  href="javascript:history.back()">
+                            <button class="btn-custom btn-edit" type="button">Go back</button>
                         </a>
+
+
+
+
+
                     </form>
 
 

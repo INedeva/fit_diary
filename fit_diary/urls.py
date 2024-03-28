@@ -24,6 +24,7 @@ urlpatterns = [
     path('accounts/', include('fit_diary.accounts.urls')),
     path('workouts/', include('fit_diary.workouts.urls')),
     path('diary/', include('fit_diary.diary.urls')),
+    path('', include('fit_diary.common.urls')),
 ]
 
 if settings.DEBUG:

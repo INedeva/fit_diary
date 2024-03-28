@@ -7,18 +7,13 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from fit_diary.accounts.forms import FitDiaryUserCreationForm, ProfileEditForm
 from fit_diary.accounts.models import Profile
 
-
 # Create your views here.
-
-# TODO: remove later
-def index(request):
-    return render(request, 'base.html')
-
 
 class LoginUserView(LoginView):
     template_name = 'accounts/login-page.html'
     redirect_authenticated_user = True
     success_url = reverse_lazy('index')
+
 
 class RegisterUserView(CreateView):
     form_class = FitDiaryUserCreationForm

@@ -149,9 +149,9 @@ ol {
 .review-section:after,
 .search-model:after,
 .hero-section,
-.back-to-top,
-.header-section {
-	background: -o-linear-gradient(305deg, #f65d5d 0%, #fdb07d 100%);
+.back-to-top {
+/*.header-section {*/
+background: -o-linear-gradient(305deg, #f65d5d 0%, #fdb07d 100%);
 	background: linear-gradient(145deg, #f65d5d 0%, #fdb07d 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f65d5d", endColorstr="#fdb07d", GradientType=1);
 }
@@ -4407,8 +4407,8 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .small-icon {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
 }
 
 .category-heading {
@@ -4462,41 +4462,3 @@ only screen and (min-width: 576px) and (max-width: 767px),
     opacity: 0.8; /* Slight transparency on hover */
 }
 
-
-/*!* Adjust the size and alignment of the select elements *!*/
-/*.event-filter-form .ef-item select {*/
-/*    height: 40px; !* Reduced height for a smaller appearance *!*/
-/*    font-size: 14px; !* Smaller font size for text inside select *!*/
-/*    padding: 0 15px; !* Adjust padding to ensure text is not too close to the edges *!*/
-/*    display: inline-block; !* Ensure select elements are inline *!*/
-/*    vertical-align: middle; !* Align with other inline elements like the filter button *!*/
-/*}*/
-
-/*!* Style the filter button to align it with the select elements *!*/
-/*.event-filter-form .site-btn {*/
-/*    height: 40px; !* Match the height of the select elements *!*/
-/*    padding: 0 20px; !* Adjust padding to fit the text comfortably *!*/
-/*    font-size: 14px; !* Match the font size of the select elements *!*/
-/*    line-height: 40px; !* Center the text vertically *!*/
-/*    vertical-align: middle; !* Align with the select elements *!*/
-/*    background: #f65d5d; !* Use a solid background color that fits your design *!*/
-/*    color: white; !* Text color *!*/
-/*    border: none; !* Remove border *!*/
-/*    border-radius: 20px; !* Rounded corners *!*/
-/*    cursor: pointer; !* Change cursor to pointer on hover *!*/
-/*    transition: background-color 0.3s ease; !* Smooth transition for background color *!*/
-/*}*/
-
-/*!* Hover effect for the button *!*/
-/*.event-filter-form .site-btn:hover {*/
-/*    background-color: #e55a5a; !* Darken the button color on hover *!*/
-/*}*/
-
-/*!* Adjustments for the form layout *!*/
-/*.event-filter-warp {*/
-/*    display: flex; !* Use flexbox for layout *!*/
-/*    align-items: center; !* Align items vertically *!*/
-/*    justify-content: space-between; !* Space between filter elements *!*/
-/*    flex-wrap: wrap; !* Allow items to wrap as needed *!*/
-/*    padding: 20px; !* Adjust padding *!*/
-/*}*/

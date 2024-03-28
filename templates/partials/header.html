@@ -3,81 +3,101 @@
 
 <!-- Header Section -->
 	<header class="header-section">
-{#		<div class="header-top">#}
-{#			<div class="row m-0">#}
-{#				<div class="col-md-6 d-none d-md-block p-0">#}
-{#					<div class="header-info">#}
-{#						<i class="material-icons">map</i>#}
-{#						<p>184 Main Collins Street</p>#}
-{#					</div>#}
-{#					<div class="header-info">#}
-{#						<i class="material-icons">phone</i>#}
-{#						<p>(965) 436 3274</p>#}
-{#					</div>#}
-{#				</div>#}
-{#				<div class="col-md-6 text-left text-md-right p-0">#}
-{#					<div class="header-info d-none d-md-inline-flex">#}
-{#						<i class="material-icons">alarm_on</i>#}
-{#						<p>Mon - Fri:  6:30am - 07:45pm</p>#}
-{#					</div>#}
-{#					<div class="header-info">#}
-{#						<i class="material-icons">language</i>#}
-{#						<select id="language" class="language-select">#}
-{#							<option data-display="Language">EN</option>#}
-{#							<option data-display="Language" value="1">ES</option>#}
-{#							<option data-display="Language" value="2">JA</option>#}
-{#							<option data-display="Language" value="2">AR</option>#}
-{#						</select>#}
-{#					</div>#}
-{#				</div>#}
-{#			</div>#}
-{#		</div>#}
+{#        TODO: to rework the header#}
+		<div class="header-top">
+			<div class="row m-0">
+				<div class="col-md-6 d-none d-md-block p-0">
+					<div class="header-info">
+						<i class="material-icons">map</i>
+						<p>Created for SoftUni - DJANGO Advanced - Exam </p>
+					</div>
+                    <div class="header-info d-none d-md-inline-flex">
+						<i class="material-icons">alarm_on</i>
+						<p>Dates of project defence: 13-14.04.2024</p>
+					</div>
+
+				</div>
+				<div class="col-md-6 text-left text-md-right p-0">
+
+                    <div class="header-info">
+						<i class="material-icons">phone</i>
+						<p>Ilina Nedeva - 0897/ 214 - 209</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
 		<div class="header-bottom">
 
-			<a href="#" class="site-logo">
-
-				<img src="{% static 'img/icons/mandala.png' %}" alt="">
-
-{#                <a target="_blank" href="https://icons8.com/icon/LEabPHUx4Gpo/seed-of-life">mandala</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>#}
+			<a href="{% url 'index' %}" class="site-logo">
+				<img src="{% static 'img/icons/mandala.png' %}" alt="FIT Diary">
 			</a>
-            <ul class="main-menu hb-left"><li><a href="#" >FIT DIARY</a></li></ul>
+            <ul class="main-menu hb-left"><li><a href="{% url 'index' %}" >FIT DIARY</a></li></ul>
 
 			<div class="hb-right">
-{#				<div class="hb-switch" id="search-switch">#}
-{#					<img src="{% static 'img/icons/search.png' %}" alt="">#}
-{#				</div>#}
+                {%  if request.user.is_authenticated %}
+
                 <div class="hb-switch" >
+{#                    TODO: dashboard link#}
 					<a href="#" >
-                        <img src="{% static 'img/icons/dashboard.png' %}" alt="" class="small-icon">
+                        <img src="{% static 'img/icons/dashboard.png' %}" alt="Dashboard" class="small-icon">
+                    </a>
+                </div>
+
+
+                <div class="hb-switch" >
+{#                    TODO: link to login if not authenticated #}
+                    <a href="{% url 'details-profile' user.pk %}" >
+                        <img src="{% static 'img/icons/profile.png' %}" alt="Profile" class="small-icon">
                     </a>
                 </div>
                 <div class="hb-switch" >
-                    <a href="#" >
-                        <img src="{% static 'img/icons/profile.png' %}" alt="" class="small-icon">
+{#                    TODO: link to login if not authenticated #}
+                    <a href="{% url 'logout-user'  %}" >
+                        <img src="{% static 'img/icons/logout.png' %}" alt="Profile" class="small-icon">
                     </a>
                 </div>
-				<div class="hb-switch" id="infor-switch">
-					<img src="{% static 'img/icons/bars.png' %}" alt="">
-				</div>
+                {% else %}
+                <div class="hb-switch" >
+{#                    TODO: link to login if not authenticated #}
+                    <a href="{% url 'login-user'  %}" >
+                        <img src="{% static 'img/icons/login.png' %}" alt="Profile" class="small-icon">
+                    </a>
+                </div>
+                {% endif %}
+{#				<div class="hb-switch" id="infor-switch">#}
+{#					<img src="{% static 'img/icons/bars.png' %}" alt="">#}
+{#				</div>#}
 
 			</div>
 			<div class="container">
 				<ul class="main-menu">
-					<li><a href="#" class="active">Home</a></li>
-{#                    <li><a href="#" class="active">Diary</a></li>#}
+                    {%  if request.user.is_authenticated %}
+{#					<li><a href="#" class="active">Diary</a></li>#}
+					<li><a href="{% url 'diary' %}" >Diary</a>
+                        <ul class="sub-menu">
+							<li><a href="{% url 'log-diary' %}?entry_type=meal">Log Meal</a></li>
+							<li><a href="{% url 'log-diary' %}?entry_type=drink">Log Drink</a></li>
+							<li><a href="{% url 'log-diary' %}?entry_type=water">Log Water</a></li>
 
-					<li><a href="#">Workouts</a>
+						</ul>
+                    </li>
+
+
+					<li><a href="{% url 'list-workout' %}">Workouts</a>
 						<ul class="sub-menu">
-							<li><a href="#">Our Workouts</a></li>
-							<li><a href="#">Workouts Details</a></li>
+							<li><a href="{% url 'create-workout' %}">Create Workout</a></li>
+{#							<li><a href="#">Workouts Details</a></li>#}
 						</ul>
 					</li>
-					<li><a href="#">Recipes</a>
-						<ul class="sub-menu">
-							<li><a href="#">Our Recipes</a></li>
-							<li><a href="#">Recipe Details</a></li>
-						</ul>
-					</li>
+
+{#					<li><a href="#">Recipes</a>#}
+{#						<ul class="sub-menu">#}
+{#							<li><a href="#">Our Recipes</a></li>#}
+{#							<li><a href="#">Recipe Details</a></li>#}
+{#						</ul>#}
+{#					</li>#}
 {#					<li><a href="#">events</a>#}
 {#						<ul class="sub-menu">#}
 {#							<li><a href="#">Our Events</a></li>#}
@@ -90,7 +110,13 @@
 {#							<li><a href="#">Blog Details</a></li>#}
 {#						</ul>#}
 {#					</li>#}
-					<li><a href="#">Contacts</a></li>
+                    {%  else %}
+					<li><a href="{%  url 'index' %}">Home</a></li>
+                    {%  endif %}
+{#                    TODO: link to about#}
+					<li><a href="{%  url 'about' %}">About</a></li>
+{#                TODO: link to contacts#}
+                    <li><a href="{% url 'contacts' %}">Contacts</a></li>
 				</ul>
 			</div>
 		</div>

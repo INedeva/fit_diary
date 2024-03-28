@@ -1,11 +1,10 @@
 {%  extends 'base.html' %}
-
 {%  load static %}
-
 {%  block main_content %}
 
 
-
+    <!-- Hero Section -->
+	<section class="hero-section">
     <div class="login-container">
         <div class="login-content">
             <h2 class="login-title">Fit Diary</h2>
@@ -27,6 +26,6 @@
             <p>Already have an account? <a href="{%  url 'login-user' %}?next={{ next }}" class="register-link">Log in</a></p>
         </div>
     </div>
-
+    </section>
 
 {% endblock %}
