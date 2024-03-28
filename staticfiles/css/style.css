@@ -4422,3 +4422,31 @@ only screen and (min-width: 576px) and (max-width: 767px),
 		margin-right: 30px;
 	}
 }
+
+/* Button Styling */
+.btn-custom {
+    font-family: 'Open Sans', sans-serif; /* Consistent font */
+    padding: 8px 15px; /* Smaller padding */
+    font-size: 14px; /* Smaller font size */
+    border-radius: 20px; /* Rounded borders */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    margin-right: 5px; /* Space between buttons */
+    display: inline-block; /* Ensure buttons are inline */
+    text-decoration: none; /* Remove underline from links */
+}
+
+.btn-edit {
+    background-image: linear-gradient(to right, #f65d5d, #fdb07d); /* Gradient background */
+    color: #fff; /* White text */
+}
+
+.btn-delete {
+    background-color: #f65d5d; /* Solid color for delete to distinguish it */
+    color: #fff; /* White text */
+}
+
+.btn-edit:hover, .btn-delete:hover {
+    opacity: 0.8; /* Slight transparency on hover */
+}

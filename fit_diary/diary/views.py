@@ -4,14 +4,14 @@ from django.db.models import Value
 from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.db import models
 
-from fit_diary.diary.forms import MealEntryForm, DrinkEntryForm, WaterIntakeEntryForm
+from fit_diary.diary.forms import MealEntryForm, DrinkEntryForm, WaterIntakeEntryForm, MealEntryDeleteForm, \
+    DrinkEntryDeleteForm, WaterIntakeEntryDeleteForm
 from fit_diary.diary.models import MealEntry, DrinkEntry, WaterIntakeEntry
 
 
-# Create your views here.
 # TODO: add login required mixin
 # class DiaryEntryCreateView(LoginRequiredMixin, CreateView):
 class DiaryEntryCreateView(CreateView):
@@ -47,7 +47,7 @@ class DiaryEntryCreateView(CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
-        print(self.request.user)  # TODO: for debuf - remove later
+        print(self.request.user)  # TODO: for debug - remove later
         form.instance.user = self.request.user
         return form
 
@@ -55,10 +55,89 @@ class DiaryEntryCreateView(CreateView):
         return self.get_model().objects.all()
 
 
-# TODO: create CBV
-# @login_required
-# def diary_view(request):
-#     return render(request, 'diary/diary.html')
+# TODO: LoginRequiredMixin
+class DiaryEntryEditView(UpdateView):
+    template_name = 'diary/edit-diary-record.html'
+    success_url = reverse_lazy('diary')
+
+    def get_form_class(self):
+        entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
+        if entry_type == 'meal':
+            return MealEntryForm
+        elif entry_type == 'drink':
+            return DrinkEntryForm
+        elif entry_type == 'water':
+            return WaterIntakeEntryForm
+        else:
+            raise Http404("Entry type not found")
+
+    def get_model(self):
+        entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
+        if entry_type == 'meal':
+            return MealEntry
+        elif entry_type == 'drink':
+            return DrinkEntry
+        elif entry_type == 'water':
+            return WaterIntakeEntry
+        else:
+            raise Http404("Model not found")
+
+    # def get_form(self, form_class=None):
+    #     form = super().get_form(form_class=form_class)
+    #     print(self.request.user)  # TODO: for debug - remove later
+    #     form.instance.user = self.request.user
+    #     return form
+
+    # def get_object(self, queryset=None):
+    #     pass
+
+    def get_queryset(self):
+        return self.get_model().objects.all()
+
+
+# TODO: LoginRequiredMixin
+class DiaryEntryDeleteView(DeleteView):
+    template_name = 'diary/delete-diary-record.html'
+    success_url = reverse_lazy('diary')
+
+    def get_form_class(self):
+        entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
+        if entry_type == 'meal':
+            return MealEntryDeleteForm
+        elif entry_type == 'drink':
+            return DrinkEntryDeleteForm
+        elif entry_type == 'water':
+            return WaterIntakeEntryDeleteForm
+        else:
+            raise Http404("Entry type not found")
+
+    def get_model(self):
+        entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
+        if entry_type == 'meal':
+            return MealEntry
+        elif entry_type == 'drink':
+            return DrinkEntry
+        elif entry_type == 'water':
+            return WaterIntakeEntry
+        else:
+            raise Http404("Model not found")
+
+    # def get_form(self, form_class=None):
+    #     form = super().get_form(form_class=form_class)
+    #     print(self.request.user)  # TODO: for debug - remove later
+    #     form.instance.user = self.request.user
+    #     return form
+
+    # def get_object(self, queryset=None):
+    #     pass
+
+    def get_queryset(self):
+        return self.get_model().objects.all()
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.object
+        return kwargs
 
 
 # @login_required - TODO: add it later
@@ -66,29 +145,15 @@ def diary_view(request):
     current_user = request.user
 
     meals = MealEntry.objects.filter(user=current_user).annotate(
-        entry_type=Value('meal', output_field=models.CharField()))
-    # ).values_list(
-    #     'id', 'created_at', 'name', 'photo',
-    #     'meal_type', 'calories',
-    #     'quantity', 'unit', 'entry_type',
-    #     named=True
-    # )
+        entry_type=Value('meal', output_field=models.CharField())
+    )
 
     drinks = DrinkEntry.objects.filter(user=current_user).annotate(
         entry_type=Value('drink', output_field=models.CharField())
-    ).values_list(
-        'id', 'created_at', 'name', 'photo',
-        'calories',
-        'quantity', 'unit', 'entry_type',
-        named=True
     )
 
     waters = WaterIntakeEntry.objects.filter(user=current_user).annotate(
         entry_type=Value('water', output_field=models.CharField())
-    ).values_list(
-        'id', 'created_at',
-        'quantity', 'unit', 'entry_type',
-        named=True
     )
 
     context = {

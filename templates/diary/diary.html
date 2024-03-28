@@ -44,7 +44,7 @@
 				<div class="col-xl-3">
 {#                    TODO: fix this to work#}
 
-{#                    <p>Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ total_logs }} logs</p>#}
+                    <p>Log count: {{ total_logs }} logs</p>
 				</div>
 				<div class="col-xl-9">
 					<form class="event-filter-form">
@@ -92,6 +92,11 @@
                                 </div>
 
                                 <div class="ei-text">
+                                    <!-- Buttons container -->
+                                    <div class="buttons-container" style="display: flex; justify-content: flex-end; margin-top: 0px;">
+                                        <a href="{% url 'edit-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-edit" style="margin-right: 5px;">Edit</a>
+                                        <a href="{% url 'delete-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-delete">Delete</a>
+                                    </div>
                                     <h4><a href="">{{ obj.name }}</a></h4>
                                     <ul>
                                         <li><i class="material-icons">person</i>{{ obj.meal_type }}</li>
@@ -101,6 +106,7 @@
                                         <li><i class="material-icons">map</i>Notes:{{ obj.notes }}</li>
                                         {%  endif %}
                                         <li><i class="material-icons">event_available</i>Date: {{ obj.created_at }}</li>
+
                                     </ul>
                                 </div>
                             </div>
@@ -127,6 +133,11 @@
                                 </div>
 
                                 <div class="ei-text">
+                                    <!-- Buttons container -->
+                                    <div class="buttons-container" style="display: flex; justify-content: flex-end; margin-top: 0px;">
+                                        <a href="{% url 'edit-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-edit" style="margin-right: 5px;">Edit</a>
+                                        <a href="{% url 'delete-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-delete">Delete</a>
+                                    </div>
                                     <h4><a href="">{{ obj.name }}</a></h4>
                                     <ul>
                                         <li><i class="material-icons">map</i>Quantity: {{ obj.quantity }} {{ obj.unit }}</li>
@@ -161,6 +172,11 @@
                                 </div>
 
                                 <div class="ei-text">
+                                    <!-- Buttons container -->
+                                    <div class="buttons-container" style="display: flex; justify-content: flex-end; margin-top: 0px;">
+                                        <a href="{% url 'edit-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-edit" style="margin-right: 5px;">Edit</a>
+                                        <a href="{% url 'delete-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-delete">Delete</a>
+                                    </div>
                                     <h4><a href="">Water added: {{ obj.quantity }} {{ obj.unit }}</a></h4>
                                     <ul>
                                         <li><i class="material-icons">map</i>Quantity: {{ obj.quantity }} {{ obj.unit }}</li>
