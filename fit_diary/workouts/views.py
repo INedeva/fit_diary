@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -13,7 +14,7 @@ from fit_diary.workouts.models import Workout, Category, Intensity, WorkoutType
 # Create your views here.
 
 
-class WorkoutCreateView(CreateView):
+class WorkoutCreateView(LoginRequiredMixin, CreateView):
     model = Workout
     fields = ( 'name', 'video_url', 'category', 'intensity', 'type', 'equipment_needed', 'description')
     template_name = 'workouts/create-workout.html'
@@ -25,14 +26,16 @@ class WorkoutCreateView(CreateView):
         return form
 
 
-class WorkoutEditView(UpdateView):
+class WorkoutEditView(LoginRequiredMixin, UpdateView):
     model = Workout
+    # TODO: fix the form, we dont want the user there
+    # TODO: pass the instance to the form when editing
     fields = "__all__"
     template_name = 'workouts/edit-workout.html'
     success_url = reverse_lazy('list-workout')
 
 
-class WorkoutListView(ListView):
+class WorkoutListView(LoginRequiredMixin, ListView):
     model = Workout
     context_object_name = 'workouts'
     template_name = 'workouts/catalogue-workouts.html'
@@ -79,10 +82,7 @@ class WorkoutListView(ListView):
 
 
 
-
-
-
-class WorkoutDetailView(DetailView):
+class WorkoutDetailView(LoginRequiredMixin, DetailView):
     model = Workout
     template_name = 'workouts/details-workout.html'
 
@@ -111,9 +111,9 @@ class WorkoutDetailView(DetailView):
                 defaults={'score': form.cleaned_data['score']}
             )
             return redirect(request.META['HTTP_REFERER'] + f'#workout-{workout.pk}')
+# TODO: check all views for login required
 
-
-class WorkoutDeleteView(DeleteView):
+class WorkoutDeleteView(LoginRequiredMixin, DeleteView):
     model = Workout
     form_class = WorkoutDeleteForm
 

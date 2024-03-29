@@ -31,6 +31,7 @@
 			</div>
 		</div>
 	</section>
+{#    TODO: get back the down arrows #}
 	<!-- Hero Section end -->
 
 	<!-- About Section -->
@@ -94,13 +95,14 @@
 			</div>
 {#            TODO: update this section with specific workouts available#}
 			<div class="classes-slider owl-carousel">
-
+{#                    TODO: filter workouts with best ratings and add the rating starts#}
 				{% for obj in workouts %}
 
 
                 <div class="classes-item">
 									<div class="ci-img">
 {#                                        TODO: fix this to be dynamic for every entry, and add a placeholder#}
+{#                                        TODO: stop the carousel when video is palyed and add navigation for the user to left and right#}
 {#										<img src="{% static 'img/classes/1.jpg' %}" alt="">#}
 {#                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>#}
                                         <iframe width="280" height="280" src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -118,6 +120,7 @@
 									</div>
 
 									<div class="ci-bottom">
+{#                                        TODO: redirect the anonymous user to register page#}
 										<div class="ci-author">
 
                                             <a href="{% url 'details-workout' obj.pk %}" class="site-btn sb-gradient">More details</a>

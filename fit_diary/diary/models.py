@@ -89,7 +89,7 @@ class DrinkEntry(FoodEntry):
     name = models.CharField(
         max_length=100,
     )
-    calories = models.IntegerField(
+    calories = models.PositiveIntegerField(
         blank=True,
         null=True,
     )

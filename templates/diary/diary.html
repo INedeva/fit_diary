@@ -23,7 +23,7 @@
                         <form method="get" action="{% url 'log-diary' %}">
 
                             <select name="entry_type" class="circle-select" onchange="this.form.submit()">
-                                <option value="" {% if request.GET.entry_type == "" %}selected{% endif %}>Add Log</option>
+
                                 <option value="meal" {% if request.GET.entry_type == "meal" %}selected{% endif %}>Log meal</option>
                                 <option value="drink" {% if request.GET.entry_type == "drink" %}selected{% endif %}>Log drink</option>
                                 <option value="water" {% if request.GET.entry_type == "water" %}selected{% endif %}>Log water</option>
@@ -49,14 +49,14 @@
         <div class="stats-section" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-bottom: 30px; border-bottom: 2px solid #eee;">
 {#            TODO: fix the hardcoded values#}
             <!-- Stats buttons -->
-            <button type="button" class="site-btn" style="width: 194px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
-                Log Count <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ total_logs }}</span>
+            <button type="button" class="site-btn" style="width: 220px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
+                Total Entries <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ total_logs }}</span>
             </button>
-            <button type="button" class="site-btn" style="width: 300px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
-                Remaining Calories <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ remaining_calories }}</span>
+            <button type="button" class="site-btn" style="width: 360px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
+                Daily Remaining Calories <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ remaining_calories }}</span>
             </button>
-            <button type="button" class="site-btn" style="width: 194px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
-                Water <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ water_consumption }}l</span>
+            <button type="button" class="site-btn" style="width: 360px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
+                Daily Water Consumption <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ water_consumption }}l</span>
             </button>
         </div>
         <!-- Filtration form -->
@@ -120,7 +120,7 @@
                                         <a href="{% url 'edit-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-edit" style="margin-right: 5px;">Edit</a>
                                         <a href="{% url 'delete-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-delete">Delete</a>
                                     </div>
-                                    <h4><a href="">{{ obj.name }}</a></h4>
+                                    <h4>{{ obj.name }}</h4>
                                     <ul>
                                         <li><i class="material-icons">person</i>{{ obj.meal_type }}</li>
                                         <li><i class="material-icons">map</i>Quantity: {{ obj.quantity }} {{ obj.unit }}</li>
@@ -164,7 +164,7 @@
                                         <a href="{% url 'edit-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-edit" style="margin-right: 5px;">Edit</a>
                                         <a href="{% url 'delete-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-delete">Delete</a>
                                     </div>
-                                    <h4><a href="">{{ obj.name }}</a></h4>
+                                    <h4>{{ obj.name }}</h4>
                                     <ul>
                                         <li><i class="material-icons">map</i>Quantity: {{ obj.quantity }} {{ obj.unit }}</li>
                                         <li><i class="material-icons">map</i>Calories: {{ obj.calories }}</li>
@@ -205,7 +205,7 @@
                                         <a href="{% url 'edit-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-edit" style="margin-right: 5px;">Edit</a>
                                         <a href="{% url 'delete-diary' obj.pk %}?entry_type={{ obj.entry_type }}" class="btn-custom btn-delete">Delete</a>
                                     </div>
-                                    <h4><a href="">Water added: {{ obj.quantity }} {{ obj.unit }}</a></h4>
+                                    <h4>Water added: {{ obj.quantity }} {{ obj.unit }}</h4>
                                     <ul>
                                         <li><i class="material-icons">map</i>Quantity: {{ obj.quantity }} {{ obj.unit }}</li>
                                         {% if obj.notes %}

@@ -134,7 +134,7 @@ class DiaryEntryDeleteView(LoginRequiredMixin, DeleteView):
 
 
 def calc_remaining_calories(request):
-    DEFAULT_CALORIE_GOAL = 200
+    DEFAULT_CALORIE_GOAL = 2000
 
     total_calories = 0
 
@@ -171,8 +171,8 @@ def calc_water_consumption_in_liters(request):
     water = WaterIntakeEntry.objects.filter(log_type_query & date_query)
 
     if water:
-
-        total_water += water.aggregate(total_water=Coalesce(Sum('quantity'), 0))['total_water']
+        # TODO: check type - float or integer
+        total_water += water.aggregate(total_water=Coalesce(Sum('quantity'), Value(0, output_field=models.FloatField())))['total_water']
 
     return total_water
 
