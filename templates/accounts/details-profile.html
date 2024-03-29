@@ -34,11 +34,12 @@
 					<div class="td-left">
 
                         {% if profile.profile_picture %}
-{#                            TODO: test it with picture #}
+
+
                             <img src="{{ profile.profile_picture.url }}" alt="cannot load pic">
                         {% else %}
-{#                          TODO: find generic image#}
-						    <img src="{%  static 'img/classes/1.jpg' %}" alt="">
+
+						    <img src="{%  static 'img/classes/author/head1.png' %}" alt="">
                         {%  endif %}
 
 						<div class="td-social">

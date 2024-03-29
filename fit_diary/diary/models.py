@@ -77,6 +77,9 @@ class MealEntry(FoodEntry):
         null=True,
     )
 
+    class Meta:
+        verbose_name_plural = "Meal Entries"
+
 # TODO: add __str__ for all models
     def __str__(self):
         return f"{self.name} ({self.meal_type}){(', calories: ' + str(self.calories)) if self.calories else ''}"
@@ -96,6 +99,9 @@ class DrinkEntry(FoodEntry):
         null=True,
     )
 
+    class Meta:
+        verbose_name_plural = "Drink Entries"
+
     def __str__(self):
         return f"{self.name}{(', calories: ' + str(self.calories)) if self.calories else ''}"
 
@@ -105,6 +111,9 @@ class WaterIntakeEntry(FoodEntry):
         max_length=20,
         choices=((Unit.LITERS, Unit.LITERS),),
     )
+
+    class Meta:
+        verbose_name_plural = "Water Intake Entries"
 
     def __str__(self):
         return f"Water Intake: {self.quantity}{self.unit}"

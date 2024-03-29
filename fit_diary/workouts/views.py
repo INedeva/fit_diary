@@ -1,7 +1,11 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
 
+from fit_diary.common.forms import AddCommentForm, AddRatingForm
+from fit_diary.common.models import Rating
 from fit_diary.workouts.forms import WorkoutDeleteForm
 from fit_diary.workouts.models import Workout, Category, Intensity, WorkoutType
 
@@ -11,9 +15,14 @@ from fit_diary.workouts.models import Workout, Category, Intensity, WorkoutType
 
 class WorkoutCreateView(CreateView):
     model = Workout
-    fields = "__all__"
+    fields = ( 'name', 'video_url', 'category', 'intensity', 'type', 'equipment_needed', 'description')
     template_name = 'workouts/create-workout.html'
     success_url = reverse_lazy('list-workout')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.instance.user = self.request.user
+        return form
 
 
 class WorkoutEditView(UpdateView):
@@ -69,9 +78,39 @@ class WorkoutListView(ListView):
         return context
 
 
+
+
+
+
 class WorkoutDetailView(DetailView):
     model = Workout
     template_name = 'workouts/details-workout.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['comment_form'] = AddCommentForm()
+
+        workout = context['object']
+        user_rating = Rating.objects.filter(user=self.request.user, workout=workout).first()
+        context['rating_form'] = AddRatingForm(instance=user_rating)
+
+        average_rating = Rating.objects.filter(workout=workout).aggregate(Avg('score'))['score__avg']
+        context['average_rating'] = round(average_rating or 0, 2)
+
+        context['rating_range'] = range(5, 0, -1)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        workout = self.get_object()
+        form = AddRatingForm(request.POST)
+        if form.is_valid():
+            rating, created = Rating.objects.update_or_create(
+                user=request.user,
+                workout=workout,
+                defaults={'score': form.cleaned_data['score']}
+            )
+            return redirect(request.META['HTTP_REFERER'] + f'#workout-{workout.pk}')
 
 
 class WorkoutDeleteView(DeleteView):
