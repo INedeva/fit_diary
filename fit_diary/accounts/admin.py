@@ -26,7 +26,7 @@ class FitDiaryUserAdmin(UserAdmin):
     form = FitDiaryUserChangeForm
     inlines = (ProfileInline,)
 
-    list_display = ('pk', 'email', 'is_staff', 'is_active', 'is_superuser', 'date_joined')
+    list_display = ('pk', 'email',  'is_superuser', 'is_moderator','is_staff','is_active', 'date_joined')
     list_display_links = ('pk', 'email',)
     list_filter = ('is_staff', 'is_active', 'is_superuser')
     search_fields = ('email',)
@@ -45,3 +45,10 @@ class FitDiaryUserAdmin(UserAdmin):
             'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active', 'is_superuser'),
         }),
     )
+
+    def is_moderator(self, obj):
+        """Check if the user is in the Moderator group."""
+        return obj.groups.filter(name='Moderator').exists()
+
+    is_moderator.boolean = True  # Displays as a checkbox icon
+    is_moderator.short_description = 'Moderator status'  # Column heade
