@@ -59,37 +59,36 @@
 
 					<div class="td-right">
 						<h3>{{ profile.full_name }}</h3>
-{#                        TODO: Add admin/Trainer/Newbie on the basis of date joined to be calculated#}
-						<h6>Trainer</h6>
+
 						<ul>
 
 							<li><strong>Email:</strong><p>{{ profile.user.email }}</p></li>
                             <li><strong>Age:</strong><p>{{ profile.age }}</p></li>
 
-                            <li><strong>Fitness goals: </strong><p>{{ profile.fitness_goals }}</p></li>
-                            <li><strong>Goal Weight:</strong><p>{{ profile.goal_weight }}</p></li>
-                            <li><strong>Activity Level: </strong><p>{{ profile.activity_level }}</p></li>
-                            <li><strong>Allergies:</strong><p>{{ profile.dietary_restrictions }}</p></li>
-                            <li><strong>Diet:</strong><p>{{ profile.preferred_diet }}</p></li>
+                            <li><strong>Fitness goals: </strong><p>{{ profile.fitness_goals|default:"N/A" }}</p></li>
+                            <li><strong>Goal Weight:</strong><p>{{ profile.goal_weight|default:"N/A" }}</p></li>
+                            <li><strong>Activity Level: </strong><p>{{ profile.activity_level|default:"N/A" }}</p></li>
+                            <li><strong>Allergies:</strong><p>{{ profile.dietary_restrictions|default:"N/A" }}</p></li>
+                            <li><strong>Diet:</strong><p>{{ profile.preferred_diet|default:"N/A" }}</p></li>
 
-{#                            TODO: Add biography in the model#}
-{#							<li><strong>Biography:</strong><p>Certification from the National Institute of Sports Medicine (NASM) USA. 25 years of sports training in the United States, Germany, Hong Kong, Malaysia, Singapore, and now Vietnam at California Fitness & Yoga Centers.</p></li>#}
 						</ul>
-{#                        TODO: To fix the link to Edit profile #}
 						<a href="{% url 'edit-profile' user.pk %}" class="site-btn sb-gradient">Edit Profile</a>
 
 					</div>
 				</div>
 				<div class="trainer-details-text">
-					<h3>About {{ profile.first_name }}</h3>
-					<p>Certification from the National Institute of Sports Medicine (NASM) USA. 25 years of sports training in the United States, Germany, Hong Kong, Malaysia, Singapore, and now Vietnam at California Fitness & Yoga Centers.</p>
-{#					TODO: Add users measurements#}
+                    {% if profile.biography %}
+                        <h3>About {{ profile.first_name }}</h3>
+                        <p>{{ profile.biography|default:"" }}</p>
+                    {%  endif %}
+
+{#					TODO LATER: Add users measurements#}
                     <ul>
-{#                        TODO: to sresearch body indices different than BMI and other metrics /scores#}
-						<li><i class="material-icons">check_circle</i>Current Weight: </li>
-						<li><i class="material-icons">check_circle</i>To add all</li>
-						<li><i class="material-icons">check_circle</i>the metrics </li>
-						<li><i class="material-icons">check_circle</i>In the profile</li>
+{#                        TODO LATER : to sresearch body indices different than BMI and other metrics /scores#}
+{#						<li><i class="material-icons">check_circle</i>Current Weight: </li>#}
+{#						<li><i class="material-icons">check_circle</i>To add all</li>#}
+{#						<li><i class="material-icons">check_circle</i>the metrics </li>#}
+{#						<li><i class="material-icons">check_circle</i>In the profile</li>#}
 					</ul>
 				</div>
             <br>

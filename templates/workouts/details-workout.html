@@ -73,7 +73,7 @@
 {#    TODO: add a button for delete workout on this page#}
 
 	<!-- Workout Details Section -->
-	<section class="classes-details-section spad overflow-hidden">
+	<section class="classes-details-section spad overflow-hidden" style="padding-top: 25px">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-9">
@@ -321,10 +321,14 @@
 						    <img src="{%  static 'img/classes/author/head1.png' %}" alt="">
                         {%  endif %}
 
+                            {% if object.user.profile.full_name %}
+							    <h4>{{ object.user.profile.full_name }}</h4>
+                            {%  elif object.user.email %}
+                                <h4>{{ object.user.email }}</h4>
+                            {%  endif %}
 
-							<h4>{{ object.user.profile.full_name }}</h4>
 {#                            TODO: strip only date#}
-{#							<h6>Last activity: {{ object.user.last_login }}</h6>#}
+{# TODO: , if user exist , if not why this video is stil here? #}
 							<p>Last activity: {{ object.user.last_login }}</p>
                             <p>Joined since: {{ object.user.date_joined }}</p>
 							<div class="ai-social">

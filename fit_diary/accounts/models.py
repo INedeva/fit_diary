@@ -1,11 +1,12 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
+from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.db import models
 
 from fit_diary.accounts.managers import FitDiaryUserManager
-# TODO: extra validation everywhere
+
 
 
 class FitDiaryUser(AbstractBaseUser, PermissionsMixin):
@@ -28,6 +29,7 @@ class FitDiaryUser(AbstractBaseUser, PermissionsMixin):
         help_text=_(
             "Designates whether this user should be treated as active. "
             "Unselect this instead of deleting accounts."
+            # TODO : instead of deleting the user, deactivate it ?
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
@@ -72,21 +74,24 @@ class PreferredDiet(models.TextChoices):
 class Profile(models.Model):
     MAX_FIRST_NAME_LENGTH = 30
     MAX_LAST_NAME_LENGTH = 30
-    MAX_FITNESS_GOALS_LENGTH = 50
-    MAX_ACTIVITY_LEVEL_LENGTH = 50
-    MAX_DIETARY_RESTRICTIONS_LENGTH = 15
-    MAX_PREFERRED_DIET_LENGTH = 15
+
+    MAX_FITNESS_GOALS_LENGTH = max(len(x) for _,x in FitnessGoals.choices)
+    MAX_ACTIVITY_LEVEL_LENGTH = max(len(x) for _,x in ActivityLevel.choices)
+    MAX_DIETARY_RESTRICTIONS_LENGTH = max(len(x) for _,x in DietaryRestrictions.choices)
+    MAX_PREFERRED_DIET_LENGTH = max(len(x) for _,x in PreferredDiet.choices)
 
     first_name = models.CharField(
         max_length=MAX_FIRST_NAME_LENGTH,
         blank=True,
         null=True,
+        help_text=_('Your first name.')
     )
 
     last_name = models.CharField(
         max_length=MAX_LAST_NAME_LENGTH,
         blank=True,
         null=True,
+        help_text=_('Your last name.')
     )
 
     age = models.PositiveIntegerField(
@@ -98,24 +103,34 @@ class Profile(models.Model):
         upload_to='images/profile_pictures/',
         blank=True,
         null=True,
+        help_text=_('Upload a profile picture.')
+    )
+
+    biography = models.TextField(
+        blank=True,
+        null=True,
+        help_text='A short bio...'
     )
 
     facebook_profile_url = models.URLField(
         blank=True,
         null=True,
         unique=True,
+        help_text=_('Your Facebook profile URL.'),
     )
 
     instagram_profile_url = models.URLField(
         blank=True,
         null=True,
         unique=True,
+        help_text=_('Your Instagram profile URL.'),
     )
 
     linkedin_profile_url = models.URLField(
         blank=True,
         null=True,
         unique=True,
+        help_text=_('Your LinkedIn profile URL.'),
     )
 
     fitness_goals = models.CharField(
@@ -129,12 +144,19 @@ class Profile(models.Model):
     goal_weight = models.DecimalField(
         max_digits=5,
         decimal_places=2,
+        validators=[
+            MinValueValidator(0.01, message="Goal weight must be greater than 0."),
+        ],
         help_text='Goal weight in kilograms',
         null=True,
         blank=True,
     )
 
     daily_calorie_goal = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(1200),
+        ],
+        help_text='Daily calories goal',
         null=True,
         blank=True,
     )
@@ -143,13 +165,14 @@ class Profile(models.Model):
         max_length=MAX_ACTIVITY_LEVEL_LENGTH,
         choices=ActivityLevel.choices,
         blank=True,
-        null=True
+        null=True,
+        help_text=_('Select your general level of daily physical activity.')
     )
 
     dietary_restrictions = models.CharField(
         max_length=MAX_DIETARY_RESTRICTIONS_LENGTH,
         choices=DietaryRestrictions.choices,
-        help_text='Any health restrictions',
+        help_text='Any health restrictions you might have',
         blank=True,
         default='None',
     )
@@ -160,6 +183,8 @@ class Profile(models.Model):
         blank=True,
         null=True,
         default='Balanced',
+        help_text=_(
+            'Select your preferred diet to tailor your nutritional plan.')
     )
 
     user = models.OneToOneField(
@@ -175,11 +200,12 @@ class Profile(models.Model):
 
         return self.first_name or self.last_name
 
+    # TODO LATER: test it
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.age})"
+        return f"{self.first_name} {self.last_name}, ({self.age})"
 #
 # class UserMeasurements(models.Model):
-#     # TODO: Add validation for all fields to be positive
+#     # TODO LATER: Add validation for all fields to be positive
 #     weight_kg = models.FloatField(
 #         null=True,
 #         blank=True,

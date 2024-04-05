@@ -23,9 +23,10 @@ def about(request):
 def contacts(request):
     return render(request, 'common/contacts.html')
 
+
 @login_required
 def create_comment_to_workout(request, workout_id):
-    # TODO: number of comments per workout
+    # maybe add later number of comments per workout
     if request.method == 'POST':
         workout = Workout.objects.get(id=workout_id)
         form = AddCommentForm(request.POST)

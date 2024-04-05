@@ -7,8 +7,8 @@ from fit_diary.workouts.models import Workout
 
 @admin.register(Workout)
 class WorkoutAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'intensity', 'type', 'created_at', 'user')
-    list_display_links = ('name', 'category', 'intensity', 'type', 'created_at',)
+    list_display = ('pk','name', 'category', 'intensity', 'type', 'created_at', 'user')
+    list_display_links = ('pk','name', 'category', 'intensity', 'type', 'created_at',)
     list_filter = ('name', 'category', 'intensity', 'type', 'created_at', 'user')
     search_fields = ('name', 'type', 'equipment_needed', 'user')
 

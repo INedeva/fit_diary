@@ -16,32 +16,38 @@ from fit_diary.diary.forms import MealEntryForm, DrinkEntryForm, WaterIntakeEntr
 from fit_diary.diary.models import MealEntry, DrinkEntry, WaterIntakeEntry
 
 
-class DiaryEntryCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'diary/create-diary-record.html'
-    success_url = reverse_lazy('diary')
+class DiaryEntryMappingMixin:
+    forms_mapping = {
+        'meal': MealEntryForm,
+        'drink': DrinkEntryForm,
+        'water': WaterIntakeEntryForm,
+    }
+    models_mapping = {
+        'meal': MealEntry,
+        'drink': DrinkEntry,
+        'water': WaterIntakeEntry,
+    }
 
-    # TODO: to rework to optimize this in a dictionary
     def get_form_class(self):
         entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
-        if entry_type == 'meal':
-            return MealEntryForm
-        elif entry_type == 'drink':
-            return DrinkEntryForm
-        elif entry_type == 'water':
-            return WaterIntakeEntryForm
-        else:
+
+        if entry_type not in self.forms_mapping:
             raise Http404("Entry type not found")
+
+        return self.forms_mapping[entry_type]
 
     def get_model(self):
         entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
-        if entry_type == 'meal':
-            return MealEntry
-        elif entry_type == 'drink':
-            return DrinkEntry
-        elif entry_type == 'water':
-            return WaterIntakeEntry
-        else:
+
+        if entry_type not in self.models_mapping:
             raise Http404("Model not found")
+
+        return self.models_mapping[entry_type]
+
+
+class DiaryEntryCreateView(DiaryEntryMappingMixin, LoginRequiredMixin, CreateView):
+    template_name = 'diary/create-diary-record.html'
+    success_url = reverse_lazy('diary')
 
     # def form_valid(self, form):
     #     form.instance.user = self.request.user
@@ -56,31 +62,9 @@ class DiaryEntryCreateView(LoginRequiredMixin, CreateView):
         return self.get_model().objects.all()
 
 
-class DiaryEntryEditView(LoginRequiredMixin, UpdateView):
+class DiaryEntryEditView(DiaryEntryMappingMixin, LoginRequiredMixin, UpdateView):
     template_name = 'diary/edit-diary-record.html'
     success_url = reverse_lazy('diary')
-
-    def get_form_class(self):
-        entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
-        if entry_type == 'meal':
-            return MealEntryForm
-        elif entry_type == 'drink':
-            return DrinkEntryForm
-        elif entry_type == 'water':
-            return WaterIntakeEntryForm
-        else:
-            raise Http404("Entry type not found")
-
-    def get_model(self):
-        entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
-        if entry_type == 'meal':
-            return MealEntry
-        elif entry_type == 'drink':
-            return DrinkEntry
-        elif entry_type == 'water':
-            return WaterIntakeEntry
-        else:
-            raise Http404("Model not found")
 
     # def get_form(self, form_class=None):
     #     form = super().get_form(form_class=form_class)
@@ -95,11 +79,12 @@ class DiaryEntryEditView(LoginRequiredMixin, UpdateView):
         return self.get_model().objects.all()
 
 
-class DiaryEntryDeleteView(LoginRequiredMixin, DeleteView):
+class DiaryEntryDeleteView(DiaryEntryMappingMixin, LoginRequiredMixin, DeleteView):
     template_name = 'diary/delete-diary-record.html'
     success_url = reverse_lazy('diary')
 
     def get_form_class(self):
+        # TODO LATER: fix this to be able to use the mapping and add DeleteForm dynamically
         entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
         if entry_type == 'meal':
             return MealEntryDeleteForm
@@ -109,17 +94,6 @@ class DiaryEntryDeleteView(LoginRequiredMixin, DeleteView):
             return WaterIntakeEntryDeleteForm
         else:
             raise Http404("Entry type not found")
-
-    def get_model(self):
-        entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
-        if entry_type == 'meal':
-            return MealEntry
-        elif entry_type == 'drink':
-            return DrinkEntry
-        elif entry_type == 'water':
-            return WaterIntakeEntry
-        else:
-            raise Http404("Model not found")
 
     # def get_object(self, queryset=None):
     #     pass
@@ -163,7 +137,7 @@ def calc_remaining_calories(request):
 
 
 def calc_water_consumption_in_liters(request):
-    total_water = 0
+    total_water = 0.0
 
     date_query = Q(created_at__date=now().date())
     log_type_query = Q(user=request.user)
@@ -171,8 +145,7 @@ def calc_water_consumption_in_liters(request):
     water = WaterIntakeEntry.objects.filter(log_type_query & date_query)
 
     if water:
-        # TODO: check type - float or integer
-        total_water += water.aggregate(total_water=Coalesce(Sum('quantity'), Value(0, output_field=models.FloatField())))['total_water']
+        total_water += water.aggregate(total_water=Coalesce(Sum('quantity'), Value(0.0, output_field=models.FloatField())))['total_water']
 
     return total_water
 
