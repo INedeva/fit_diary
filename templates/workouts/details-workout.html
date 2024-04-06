@@ -67,10 +67,7 @@
 
 {% endblock %}
 {% block additional_content %}
-{#    TODO: remove the padding of the video#}
-{#    TODO: FIX this page #}
-{#    TODO: add a button for edit workout on this page#}
-{#    TODO: add a button for delete workout on this page#}
+
 
 	<!-- Workout Details Section -->
 	<section class="classes-details-section spad overflow-hidden" style="padding-top: 25px">
@@ -79,9 +76,14 @@
 				<div class="col-lg-9">
 					<div class="classes-details">
 						<div class="classes-preview" id="workout-{{ object.pk }}">
-{#							<img src="{%  static 'img/classes/big.jpg' %}" alt="">#}
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-						</div>
+
+                            {%  if object.video_url %}
+                             <iframe width="560" height="315" src="{{ object.video_url }}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            {% else %}
+                                <img style="width: 280px;height: 280px;min-width: 40%" src="{% static 'img/classes/1.jpg' %}" alt="">
+                            {%  endif %}
+
+                        </div>
 						<div class="row">
 							<div class="col-lg-8">
 
@@ -97,7 +99,17 @@
 
 								<h2>{{ object.name }}</h2>
                                 <h6>Added: {{ object.created_at }}</h6>
-{#                            TODO: adjust times according to user local time ?#}
+{#                            LATER: adjust time according to user local time ?#}
+
+                                {%  if request.user == object.user %}
+                            <div class="ci-bottom">
+										<div class="ci-author">
+                                            <a href="{% url 'edit-workout' object.pk %}" class="btn-custom btn-edit" style="margin-right: 5px;margin-top:5px;">edit video</a>
+										    <a href="{%  url 'delete-workout' object.pk %}" class="btn-custom btn-delete" style="margin-right: 5px;margin-top:5px;">delete video</a>
+                                        </div>
+
+                            </div>
+                            {%  endif %}
                                 <br>
 
 {#								<div class="cd-meta"><p><i class="material-icons">alarm_on</i>120 Mins </p></div>#}
@@ -162,79 +174,6 @@
 {#						</div>#}
 					</div>
 
-{# TODO: showcase other workouts , but filter out the main workout shown #}
-{#					<h3 class="comment-title">Other Classes</h3>#}
-{#					<div class="classes-other-slider owl-carousel">#}
-{#						<div class="classes-item">#}
-{#							<div class="ci-img">#}
-{#								<img src="img/classes/1.jpg" alt="">#}
-{#							</div>#}
-{#							<div class="ci-text">#}
-{#								<h4><a href="../classes-details.html">Artistic Yoga</a></h4>#}
-{#								<div class="ci-metas">#}
-{#									<div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>#}
-{#									<div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>#}
-{#								</div>#}
-{#								<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis</p>#}
-{#							</div>#}
-{#							<div class="ci-bottom">#}
-{#								<div class="ci-author">#}
-{#									<img src="img/classes/author/1.jpg" alt="">#}
-{#									<div class="author-text">#}
-{#										<h6>Victoria Webb</h6>#}
-{#										<p>Yoga Trainer</p>#}
-{#									</div>#}
-{#								</div>#}
-{#								<a href="" class="site-btn sb-gradient">book now</a>#}
-{#							</div>#}
-{#						</div>#}
-{#						<div class="classes-item">#}
-{#							<div class="ci-img">#}
-{#								<img src="img/classes/2.jpg" alt="">#}
-{#							</div>#}
-{#							<div class="ci-text">#}
-{#								<h4>Traditional Hatha</h4>#}
-{#								<div class="ci-metas">#}
-{#									<div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>#}
-{#									<div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>#}
-{#								</div>#}
-{#								<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis</p>#}
-{#							</div>#}
-{#							<div class="ci-bottom">#}
-{#								<div class="ci-author">#}
-{#									<img src="img/classes/author/2.jpg" alt="">#}
-{#									<div class="author-text">#}
-{#										<h6>Victoria Webb</h6>#}
-{#										<p>Yoga Trainer</p>#}
-{#									</div>#}
-{#								</div>#}
-{#								<a href="" class="site-btn sb-gradient">book now</a>#}
-{#							</div>#}
-{#						</div>#}
-{#						<div class="classes-item">#}
-{#							<div class="ci-img">#}
-{#								<img src="img/classes/3.jpg" alt="">#}
-{#							</div>#}
-{#							<div class="ci-text">#}
-{#								<h4>Yoga Therapy</h4>#}
-{#								<div class="ci-metas">#}
-{#									<div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>#}
-{#									<div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>#}
-{#								</div>#}
-{#								<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis</p>#}
-{#							</div>#}
-{#							<div class="ci-bottom">#}
-{#								<div class="ci-author">#}
-{#									<img src="img/classes/author/3.jpg" alt="">#}
-{#									<div class="author-text">#}
-{#										<h6>Victoria Webb</h6>#}
-{#										<p>Yoga Trainer</p>#}
-{#									</div>#}
-{#								</div>#}
-{#								<a href="" class="site-btn sb-gradient">book now</a>#}
-{#							</div>#}
-{#						</div>#}
-{#					</div>#}
 
 
 
@@ -285,11 +224,8 @@
 					<form class="singup-form" action="{%  url 'comment' workout_id=object.pk %}" method="post">
 						<div class="row">
                             {%  csrf_token %}
-{#                            TODO: remove the label#}
 							<div class="col-md-12">
                                 {{ comment_form.as_p }}
-{#								<textarea placeholder="Start typing..."></textarea>#}
-{#								<a href="#" class="site-btn sb-gradient">Comment</a>#}
                                 <button type="submit" class="site-btn sb-gradient">Comment</button>
 							</div>
 						</div>
@@ -327,10 +263,10 @@
                                 <h4>{{ object.user.email }}</h4>
                             {%  endif %}
 
-{#                            TODO: strip only date#}
-{# TODO: , if user exist , if not why this video is stil here? #}
-							<p>Last activity: {{ object.user.last_login }}</p>
-                            <p>Joined since: {{ object.user.date_joined }}</p>
+
+{# TODO: , add if user exists check , if not -  why this video is stil here? #}
+							<p>Last activity: {{ object.user.last_login|date:"F j, Y" }}</p>
+                            <p>Joined since: {{ object.user.date_joined|date:"F j, Y" }}</p>
 							<div class="ai-social">
 
                                 {% if object.user.profile.facebook_profile_url %}

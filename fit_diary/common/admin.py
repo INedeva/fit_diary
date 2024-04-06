@@ -19,7 +19,6 @@ class CommentAdmin(admin.ModelAdmin):
 
     fields = ('text', 'workout', 'user')
 
-    # TODO LATER: test it
     def short_text(self, obj):
         return f'{obj.text[:CommentAdmin.COMMENT_PREVIEW_LENGTH]}...' if obj.text else ''
 

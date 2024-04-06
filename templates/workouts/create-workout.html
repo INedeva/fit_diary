@@ -2,12 +2,12 @@
 {%  load static %}
 {% block main_content %}
 
-        <section class="hero-section">
+        <section class="hero-section" style="height: 120%;">
                 <div class="container">
                     <div class="trainer-details login-container" style="max-width: 800px;">
                         <h2>Create Workout</h2>
                         <br>
-{#                        TODO: to fix the styles of the form#}
+
                         <form action="{%  url 'create-workout'  %}" method="post" class="singup-form contact-form" >
 
                                         {{ form.as_p}}

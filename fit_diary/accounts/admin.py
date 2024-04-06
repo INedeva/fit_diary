@@ -9,6 +9,7 @@ from fit_diary.accounts.models import Profile
 
 
 UserModel = get_user_model()
+# TODO: Delete the moderator, it is too much
 
 
 class ProfileInline(admin.StackedInline):

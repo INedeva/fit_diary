@@ -2,15 +2,21 @@
 
 {%  load static %}
 
+{%  block additional_styles %}
+
+    {%  endblock %}
+
+
+
 {%  block main_content %}
 
 
-  <section class="hero-section" style="height: 220%;">
+  <section class="hero-section" style="height: 230%;">
 		<div class="container" >
 			<div class="trainer-details login-container" style="max-width: 800px;">
                 <h2>Edit Profile </h2>
                 <br>
-                {#            TODO: to make the form in two column #}
+
                 <form action="{%  url 'edit-profile' object.pk %}" method="post" class="singup-form contact-form" enctype="multipart/form-data">
 
                     {{ form.as_p}}

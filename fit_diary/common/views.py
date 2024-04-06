@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 
 from fit_diary.common.forms import AddCommentForm
@@ -10,7 +11,9 @@ from fit_diary.workouts.models import Workout
 
 
 def index(request):
-    queryset = Workout.objects.all()
+
+    # Annotate each Workout with its average rating score
+    queryset = Workout.objects.annotate(average_rating=Avg('rating__score')).order_by('-average_rating')[:10]
 
     context = {'workouts': queryset}
     return render(request, 'common/index.html', context)

@@ -9,13 +9,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-7 m-auto text-white">
-
 					<h2>FIT Diary </h2>
-
-
-
-{#					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>#}
-
                 </div>
 
 
@@ -47,7 +41,6 @@
    <div class="container" style="padding-top: 20px;">
     <div class="stats-and-filter">
         <div class="stats-section" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-bottom: 30px; border-bottom: 2px solid #eee;">
-{#            TODO: fix the hardcoded values#}
             <!-- Stats buttons -->
             <button type="button" class="site-btn" style="width: 220px; background-color: #fdb07d; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px; cursor: pointer; border-radius: 12px;">
                 Total Entries <span class="badge text-bg-secondary" style="background-color: #ff6347; border-radius: 50%;">{{ total_logs }}</span>
@@ -97,7 +90,6 @@
                 {%  if meals %}
 
                 <!-- Meals Section -->
-{#            <div class="col-md-4">#}
                 <h3 class="category-heading">Meals</h3>
                 <div class="row">
 
@@ -122,13 +114,16 @@
                                     </div>
                                     <h4>{{ obj.name }}</h4>
                                     <ul>
-                                        <li><i class="material-icons">person</i>{{ obj.meal_type }}</li>
-                                        <li><i class="material-icons">map</i>Quantity: {{ obj.quantity }} {{ obj.unit }}</li>
-                                        <li><i class="material-icons">map</i>Calories: {{ obj.calories }}</li>
-                                        {% if obj.notes %}
-                                        <li><i class="material-icons">map</i>Notes:{{ obj.notes }}</li>
-                                        {%  endif %}
-                                        <li><i class="material-icons">event_available</i>Date: {{ obj.created_at }}</li>
+
+                                        <li><i class="material-icons">restaurant_menu</i>{{ obj.meal_type|default:"Breakfast" }}</li>
+
+                                        <li><i class="material-icons">straighten</i>Quantity: {{ obj.quantity|default:0.0 }} {{ obj.unit }}</li>
+
+                                        <li><i class="material-icons">local_fire_department</i>Calories: {{ obj.calories|default:0 }}</li>
+
+                                        <li><i class="material-icons">note</i>Notes: {{ obj.notes|default:"..." }}</li>
+
+                                        <li><i class="material-icons">event_available</i>Date: {{ obj.created_at|date:"F j, Y" }}</li>
 
                                     </ul>
                                 </div>
@@ -166,12 +161,13 @@
                                     </div>
                                     <h4>{{ obj.name }}</h4>
                                     <ul>
-                                        <li><i class="material-icons">map</i>Quantity: {{ obj.quantity }} {{ obj.unit }}</li>
-                                        <li><i class="material-icons">map</i>Calories: {{ obj.calories }}</li>
-                                        {% if obj.notes %}
-                                        <li><i class="material-icons">map</i>Notes:{{ obj.notes }}</li>
-                                        {%  endif %}
-                                        <li><i class="material-icons">event_available</i>Date: {{ obj.created_at }}</li>
+                                        <li><i class="material-icons">straighten</i>Quantity: {{ obj.quantity|default:0.0 }} {{ obj.unit }}</li>
+
+                                        <li><i class="material-icons">local_fire_department</i>Calories: {{ obj.calories|default:0 }}</li>
+
+                                        <li><i class="material-icons">note</i>Notes: {{ obj.notes|default:"..." }}</li>
+
+                                        <li><i class="material-icons">event_available</i>Date: {{ obj.created_at|date:"F j, Y" }}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -207,11 +203,11 @@
                                     </div>
                                     <h4>Water added: {{ obj.quantity }} {{ obj.unit }}</h4>
                                     <ul>
-                                        <li><i class="material-icons">map</i>Quantity: {{ obj.quantity }} {{ obj.unit }}</li>
-                                        {% if obj.notes %}
-                                        <li><i class="material-icons">map</i>Notes:{{ obj.notes }}</li>
-                                        {%  endif %}
-                                        <li><i class="material-icons">event_available</i>Date: {{ obj.created_at }}</li>
+                                        <li><i class="material-icons">straighten</i>Quantity: {{ obj.quantity|default:0 }} {{ obj.unit }}</li>
+
+                                        <li><i class="material-icons">note</i>Notes: {{ obj.notes|default:"..." }}</li>
+
+                                        <li><i class="material-icons">event_available</i>Date: {{ obj.created_at|date:"F j, Y" }}</li>
                                     </ul>
                                 </div>
                             </div>

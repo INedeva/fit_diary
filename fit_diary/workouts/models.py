@@ -33,7 +33,7 @@ class Workout(models.Model):
     MAX_CATEGORY_LENGTH = max(len(x) for _, x in Category.choices)
     MAX_INTENSITY_LENGTH = max(len(x) for _, x in Intensity.choices)
     # FIXME: having issues with MAX_TYPE_LENGTH = max(len(x) for _, x in WorkoutType.choices)
-    # workouts.Workout.type: (fields.E009) 'max_length' is too small to fit the longest value in 'choices' (32 characters).
+    # ERROR: workouts.Workout.type: (fields.E009) 'max_length' is too small to fit the longest value in 'choices' (32 characters).
     MAX_TYPE_LENGTH = 50
 
     name = models.CharField(
@@ -101,6 +101,6 @@ class Workout(models.Model):
         on_delete=models.CASCADE,
     )
 
-    # TODO LATER: test it
+
     def __str__(self):
         return f"{self.name} - {self.type}, ({self.intensity})"

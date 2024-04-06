@@ -2,14 +2,13 @@
 {%  load static %}
 {% block main_content %}
 
-{#    TODO: fix styling#}
-<section class="hero-section">
-{#     TODO: to fix forms layout and placehoders#}
+
+<section class="hero-section" style="height: 120%;">
                 <div class="container">
-                    <div class="trainer-details login-container">
+                    <div class="trainer-details login-container" style="max-width: 800px;">
                         <h2>Edit Workout</h2>
                         <br>
-        {#           TODO: To revise the classes#}
+
                         <form action="{%  url 'edit-workout' object.pk %}" method="post" class="login-form" >
 
                                         {{ form.as_p}}

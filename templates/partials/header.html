@@ -3,7 +3,6 @@
 
 <!-- Header Section -->
 	<header class="header-section">
-{#        TODO: to rework the header#}
 		<div class="header-top">
 			<div class="row m-0">
 				<div class="col-md-6 d-none d-md-block p-0">
@@ -45,22 +44,18 @@
                     </a>
                 </div>
 
-
                 <div class="hb-switch" >
-{#                    TODO: link to login if not authenticated #}
                     <a href="{% url 'details-profile' user.pk %}" >
                         <img src="{% static 'img/icons/profile.png' %}" alt="Profile" class="small-icon">
                     </a>
                 </div>
                 <div class="hb-switch" >
-{#                    TODO: link to login if not authenticated #}
                     <a href="{% url 'logout-user'  %}" >
                         <img src="{% static 'img/icons/logout.png' %}" alt="Profile" class="small-icon">
                     </a>
                 </div>
                 {% else %}
                 <div class="hb-switch" >
-{#                    TODO: link to login if not authenticated #}
                     <a href="{% url 'login-user'  %}" >
                         <img src="{% static 'img/icons/login.png' %}" alt="Profile" class="small-icon">
                     </a>
@@ -113,9 +108,8 @@
                     {%  else %}
 					<li><a href="{%  url 'index' %}">Home</a></li>
                     {%  endif %}
-{#                    TODO: link to about#}
+
 					<li><a href="{%  url 'about' %}">About</a></li>
-{#                TODO: link to contacts#}
                     <li><a href="{% url 'contacts' %}">Contacts</a></li>
 				</ul>
 			</div>

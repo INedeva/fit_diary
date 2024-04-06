@@ -14,18 +14,24 @@ from django.db import models
 from fit_diary.diary.forms import MealEntryForm, DrinkEntryForm, WaterIntakeEntryForm, MealEntryDeleteForm, \
     DrinkEntryDeleteForm, WaterIntakeEntryDeleteForm
 from fit_diary.diary.models import MealEntry, DrinkEntry, WaterIntakeEntry
+from fit_diary.workouts.mixins import OwnerRequiredMixin
 
 
 class DiaryEntryMappingMixin:
+    models_mapping = {
+        'meal': MealEntry,
+        'drink': DrinkEntry,
+        'water': WaterIntakeEntry,
+    }
     forms_mapping = {
         'meal': MealEntryForm,
         'drink': DrinkEntryForm,
         'water': WaterIntakeEntryForm,
     }
-    models_mapping = {
-        'meal': MealEntry,
-        'drink': DrinkEntry,
-        'water': WaterIntakeEntry,
+    delete_forms_mapping = {
+        'meal': MealEntryDeleteForm,
+        'drink': DrinkEntryDeleteForm,
+        'water': WaterIntakeEntryDeleteForm,
     }
 
     def get_form_class(self):
@@ -62,7 +68,7 @@ class DiaryEntryCreateView(DiaryEntryMappingMixin, LoginRequiredMixin, CreateVie
         return self.get_model().objects.all()
 
 
-class DiaryEntryEditView(DiaryEntryMappingMixin, LoginRequiredMixin, UpdateView):
+class DiaryEntryEditView(OwnerRequiredMixin, DiaryEntryMappingMixin, LoginRequiredMixin, UpdateView):
     template_name = 'diary/edit-diary-record.html'
     success_url = reverse_lazy('diary')
 
@@ -79,21 +85,16 @@ class DiaryEntryEditView(DiaryEntryMappingMixin, LoginRequiredMixin, UpdateView)
         return self.get_model().objects.all()
 
 
-class DiaryEntryDeleteView(DiaryEntryMappingMixin, LoginRequiredMixin, DeleteView):
+class DiaryEntryDeleteView(OwnerRequiredMixin, DiaryEntryMappingMixin, LoginRequiredMixin, DeleteView):
     template_name = 'diary/delete-diary-record.html'
     success_url = reverse_lazy('diary')
 
     def get_form_class(self):
-        # TODO LATER: fix this to be able to use the mapping and add DeleteForm dynamically
         entry_type = self.request.GET.get('entry_type', None) or self.request.POST.get('entry_type', None)
-        if entry_type == 'meal':
-            return MealEntryDeleteForm
-        elif entry_type == 'drink':
-            return DrinkEntryDeleteForm
-        elif entry_type == 'water':
-            return WaterIntakeEntryDeleteForm
-        else:
+        if entry_type not in DiaryEntryMappingMixin.delete_forms_mapping:
             raise Http404("Entry type not found")
+        else:
+            return DiaryEntryMappingMixin.delete_forms_mapping[entry_type]
 
     # def get_object(self, queryset=None):
     #     pass

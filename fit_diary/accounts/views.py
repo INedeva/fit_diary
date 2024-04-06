@@ -1,4 +1,5 @@
 from django.contrib.auth import login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -30,12 +31,12 @@ def logout_user(request):
     return redirect('index')
 
 
-class ProfileDetailsView(DetailView):
+class ProfileDetailsView(LoginRequiredMixin, DetailView):
     queryset = Profile.objects.all().prefetch_related('user')
     template_name = 'accounts/details-profile.html'
 
 
-class ProfileEditView(UpdateView):
+class ProfileEditView(LoginRequiredMixin, UpdateView):
     queryset = Profile.objects.all()
     form_class = ProfileEditForm
     template_name = 'accounts/edit-profile.html'
@@ -48,7 +49,7 @@ class ProfileEditView(UpdateView):
         return super().form_valid(form)
 
 
-class ProfileDeleteView(DeleteView):
+class ProfileDeleteView(LoginRequiredMixin, DeleteView):
     queryset = Profile.objects.all()
     template_name = 'accounts/delete-profile.html'
     success_url = reverse_lazy('index')

@@ -3,15 +3,13 @@
 {%  block main_content %}
 
 
-<section class="hero-section">
-{#                TODO: FIX styles#}
+<section class="hero-section" style="height: 120%;">
+
                 <div class="container">
-                    <div class="trainer-details login-container">
-        {#           TODO: To revise the classes#}
-{#                        TODO: context variable for the log#}
+                    <div class="trainer-details login-container" style="max-width: 800px;">
                         <h2>Edit {{ request.GET.entry_type }} entry</h2>
                         <br>
-
+{#TODO: fix the form - tickbox for picture#}
                         <form action="{%  url 'edit-diary' object.pk %}" method="post" class="singup-form login-form" enctype="multipart/form-data">
 
                             {{ form.as_p}}

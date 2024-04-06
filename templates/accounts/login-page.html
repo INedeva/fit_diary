@@ -13,7 +13,7 @@
             <h2 class="login-title">Fit Diary</h2>
 
 
-            <form action="{%  url 'login-user' %}?next={{ next }}" method="post" class="login-form">
+            <form action="{%  url 'login-user' %}?next={{ next }}" method="post" class="login-form singup-form">
                 {{ form.as_p}}
                 {% csrf_token %}
 

@@ -92,7 +92,6 @@ class MealEntry(FoodEntry):
     class Meta:
         verbose_name_plural = "Meal Entries"
 
-    # TODO LATER: test it
     def __str__(self):
         return f"{self.name} ({self.meal_type}){(', calories: ' + str(self.calories)) if self.calories else ''}"
 
@@ -121,7 +120,6 @@ class DrinkEntry(FoodEntry):
     class Meta:
         verbose_name_plural = "Drink Entries"
 
-    # TODO LATER: test it
     def __str__(self):
         return f"{self.name}{(', calories: ' + str(self.calories)) if self.calories else ''}"
 
@@ -135,6 +133,5 @@ class WaterIntakeEntry(FoodEntry):
     class Meta:
         verbose_name_plural = "Water Intake Entries"
 
-    # TODO LATER: test it
     def __str__(self):
         return f"Water Intake: {self.quantity}{self.unit}"

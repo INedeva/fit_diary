@@ -3,16 +3,17 @@
 {%  block main_content %}
 
 
+
+
     <!-- Hero Section -->
-	<section class="hero-section">
+	<section class="hero-section signup-section">
     <div class="login-container">
-        <div class="login-content">
+        <div class="login-content ">
             <h2 class="login-title">Fit Diary</h2>
 
+            <form action="{%  url 'register-user' %}" method="post" class="login-form singup-form">
 
-            <form action="{%  url 'register-user' %}" method="post" class="login-form">
-{#                TODO: to fix password validation rules to show prettier#}
-                {{ form.as_p}}
+                {{ form.as_p }}
                 {% csrf_token %}
 
                 <button type="submit" class="site-btn sb-gradient">Register</button>
@@ -29,3 +30,4 @@
     </section>
 
 {% endblock %}
+

@@ -8,6 +8,7 @@ from django.views.generic import CreateView, UpdateView, ListView, DetailView, D
 from fit_diary.common.forms import AddCommentForm, AddRatingForm
 from fit_diary.common.models import Rating
 from fit_diary.workouts.forms import WorkoutDeleteForm
+from fit_diary.workouts.mixins import OwnerRequiredMixin
 from fit_diary.workouts.models import Workout, Category, Intensity, WorkoutType
 
 
@@ -26,13 +27,15 @@ class WorkoutCreateView(LoginRequiredMixin, CreateView):
         return form
 
 
-class WorkoutEditView(LoginRequiredMixin, UpdateView):
+class WorkoutEditView(OwnerRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Workout
-    # TODO: fix the form, we dont want the user there
-    # TODO: pass the instance to the form when editing
-    fields = "__all__"
+    fields = ('name', 'video_url', 'category', 'intensity', 'type', 'equipment_needed', 'description')
     template_name = 'workouts/edit-workout.html'
     success_url = reverse_lazy('list-workout')
+
+    # def form_valid(self, form):
+    #     form.instance.user = self.request.user
+    #     return super().form_valid(form)
 
 
 class WorkoutListView(LoginRequiredMixin, ListView):
@@ -57,13 +60,12 @@ class WorkoutListView(LoginRequiredMixin, ListView):
         if intensity:
             queryset = queryset.filter(intensity=intensity)
 
-        # TODO: to make it sort by date instead of id
+
         if sort == 'oldest':
-            queryset = queryset.order_by('id')
+            queryset = queryset.order_by('created_at')
         elif sort == 'newest':
-            queryset = queryset.order_by('-id')
+            queryset = queryset.order_by('-created_at')
         elif sort == 'a_z':
-            # TODO: Check why names is not working as expected - maybe ASCII - lower/upper case ?
             queryset = queryset.order_by('name')
         elif sort == 'z_a':
             queryset = queryset.order_by('-name')
@@ -79,7 +81,6 @@ class WorkoutListView(LoginRequiredMixin, ListView):
         context['workout_type_choices'] = WorkoutType.choices
 
         return context
-
 
 
 class WorkoutDetailView(LoginRequiredMixin, DetailView):
@@ -111,9 +112,9 @@ class WorkoutDetailView(LoginRequiredMixin, DetailView):
                 defaults={'score': form.cleaned_data['score']}
             )
             return redirect(request.META['HTTP_REFERER'] + f'#workout-{workout.pk}')
-# TODO: check all views for login required
 
-class WorkoutDeleteView(LoginRequiredMixin, DeleteView):
+
+class WorkoutDeleteView(OwnerRequiredMixin, LoginRequiredMixin, DeleteView):
     model = Workout
     form_class = WorkoutDeleteForm
 

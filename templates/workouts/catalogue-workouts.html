@@ -10,7 +10,7 @@
 	<!-- Page top Section end -->
 
 	<!-- Classes Section -->
-{#    TODO: add create button#}
+
 	<section class="classes-page-section spad overflow-hidden" style="padding-top: 20px;">
 		<div class="container">
 			<div class="row">
@@ -19,13 +19,14 @@
 						<div class="row">
 
                             <div class="col-md-6">
-
                                 <p>Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ total_workouts }} workouts</p>
-
+                                <a href="{% url 'create-workout' %}" class="site-btn sb-gradient">+ add new workout</a>
                             </div>
 
 
+
 							<div class="col-md-6">
+                                {% if object_list %}
                                 <form method="get">
                                     <!-- Hidden fields for filtering parameters -->
                                     <input type="hidden" name="category" value="{{ request.GET.category }}">
@@ -40,11 +41,13 @@
                                         <option value="z_a" {% if request.GET.sort == "z_a" %}selected{% endif %}>Z-A</option>
                                     </select>
                                 </form>
+                                {% endif %}
                             </div>
 						</div>
 					</div>
 					<div class="row">
 
+                {% if object_list %}
                     {%  for obj in object_list %}
 
 
@@ -52,44 +55,49 @@
 							<div class="classes-item-warp">
 								<div class="classes-item">
 									<div class="ci-img">
-{#                                        TODO: fix this to be dynamic for every entry, and add a placeholder#}
-{#										<img src="{% static 'img/classes/1.jpg' %}" alt="">#}
-{#                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>#}
-                                        <iframe src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-									</div>
+
+                                        {%  if obj.video_url %}
+                                         <iframe style="width: 280px;height: 280px;" src="{{ obj.video_url }}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                        {% else %}
+                                            <img style="width: 280px;height: 262px;" src="{% static 'img/classes/1.jpg' %}" alt="">
+                                        {%  endif %}
+
+                                    </div>
+
+
 									<div class="ci-text">
+
 										<h4><a href="{% url 'details-workout' obj.pk %}">{{ obj.name }}</a></h4>
 										<div class="ci-metas">
-{#                                            TODO: Add more suitable icons#}
-											<div class="ci-meta"><i class="material-icons">event_available</i>{{ obj.type }}</div>
-											<div class="ci-meta"><i class="material-icons">alarm_on</i>{{ obj.category }}</div>
-                                            <div class="ci-meta"><i class="material-icons">alarm_on</i>{{ obj.intensity }}</div>
+											<div class="ci-meta"><i class="material-icons">category</i>{{ obj.type }}</div>
+											<div class="ci-meta"><i class="material-icons">list</i>{{ obj.category }}</div>
+                                            <div class="ci-meta"><i class="material-icons">whatshot</i>{{ obj.intensity }}</div>
 										</div>
 										<p>Description: {{ obj.description }}. </p>
                                         <p>Equipment needed: {{ obj.equipment_needed }}</p>
+
+                                        <p>Added: {{ obj.created_at|date:"F j, Y" }}</p>
 									</div>
 
+                                    {% if request.user == obj.user %}
 									<div class="ci-bottom">
 										<div class="ci-author">
-
                                             <a href="{% url 'edit-workout' obj.pk %}" class="site-btn sb-gradient">edit</a>
 										</div>
-
                                         <a href="{%  url 'delete-workout' obj.pk %}" class="site-btn sb-gradient">delete</a>
-
 									</div>
+                                    {%  endif %}
 
 								</div>
 							</div>
 						</div>
-
                     {%  endfor %}
 
-
-
-
 					</div>
-{#                TODO: Add "empty result notificaton#}
+                {%  else %}
+                    <p> No workouts. Try adding one ...</p>
+                {%  endif %}
+
                     {% if object_list %}
                     <div class="site-pagination pt-3">
                         {% if page_obj.has_previous %}
@@ -115,7 +123,7 @@
 
 				</div>
 
-
+            {%  if object_list %}
             <div class="col-lg-3 col-md-5 col-sm-8 sidebar">
                 <div class="sb-widget">
                     <h2 class="sb-title">Filter Workouts</h2>
@@ -141,88 +149,16 @@
                                 <option value="{{ value }}">{{ name }}</option>
                             {% endfor %}
                         </select>
-{#                        <button type="submit">Search</button>#}
-{#                    </form>#}
-{#                </div>#}
 
-
-
-{#                                TODO: Add filtration by keyword for equipment#}
-{#							<h3>Filter by Day</h3>#}
-{#							<div class="cf-cal">#}
-{#								<div class="cf-radio">#}
-{#									<input type="checkbox" name="sc" id="monday">#}
-{#									<label for="monday">Monday</label>#}
-{#								</div>#}
-{#								<div class="cf-radio">#}
-{#									<input type="checkbox" name="sc" id="tuesday">#}
-{#									<label for="tuesday">Tuesday</label>#}
-{#								</div>#}
-{#								<div class="cf-radio">#}
-{#									<input type="checkbox" name="sc" id="wednesday">#}
-{#									<label for="wednesday">Wednesday</label>#}
-{#								</div>#}
-{#								<div class="cf-radio">#}
-{#									<input type="checkbox" name="sc" id="thurstday">#}
-{#									<label for="thurstday">Thurstday</label>#}
-{#								</div>#}
-{#							</div>#}
-{#							<div class="cf-cal">#}
-{#								<div class="cf-radio">#}
-{#									<input type="checkbox" name="sc" id="friday">#}
-{#									<label for="friday">Friday</label>#}
-{#								</div>#}
-{#								<div class="cf-radio">#}
-{#									<input type="checkbox" name="sc" id="saturday">#}
-{#									<label for="saturday">Saturday</label>#}
-{#								</div>#}
-{#								<div class="cf-radio">#}
-{#									<input type="checkbox" name="sc" id="sunday">#}
-{#									<label for="sunday">Sunday</label>#}
-{#								</div>#}
-{#							</div>#}
-{#							<div class="clearfix"></div>#}
+{#                                Later: Add filtration by keyword for equipment #}
 							<button class="site-btn sb-gradient">Filter now</button>
 						</form>
 					</div>
 
-{#					<div class="sb-widget">#}
-{#						<h2 class="sb-title">Popular Classes</h2>#}
-{#						<div class="popular-classes-widget owl-carousel">#}
-{#							<div class="pc-item">#}
-{#								<div class="pc-thumb set-bg" data-setbg="img/event/1.jpg"></div>#}
-{#								<div class="pc-text">#}
-{#									<h4><a href="#">Yoga Balance</a></h4>#}
-{#									<ul>#}
-{#										<li><i class="material-icons">event_available</i>Mon, Wed, Fri</li>#}
-{#										<li><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</li>#}
-{#										<li><i class="material-icons">person_outline</i>Carolyn Berry</li>#}
-{#									</ul>#}
-{#								</div>#}
-{#							</div>#}
-{#							<div class="pc-item">#}
-{#								<div class="pc-thumb set-bg" data-setbg="img/event/2.jpg"></div>#}
-{#								<div class="pc-text">#}
-{#									<h4><a href="#">Yoga Balance</a></h4>#}
-{#									<ul>#}
-{#										<li><i class="material-icons">event_available</i>Mon, Wed, Fri</li>#}
-{#										<li><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</li>#}
-{#										<li><i class="material-icons">person_outline</i>Carolyn Berry</li>#}
-{#									</ul>#}
-{#								</div>#}
-{#							</div>#}
-{#						</div>#}
-{#					</div>#}
-
-{#                    TODO: remove USELESS#}
-{#					<div class="sb-widget">#}
-{#						<div class="sb-video">#}
-{#							<img src="{% static 'img/video.jpg' %}" alt="">#}
-{#							<a href="https://www.youtube.com/watch?v=vgv-hzTl5FA" class="video-popup"><img src="{% static 'img/icons/play.png' %}" alt=""></a>#}
-{#						</div>#}
-{#					</div>#}
-
 				</div>
+            {%  endif %}
+
+
 			</div>
 		</div>
 	</section>

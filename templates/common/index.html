@@ -5,12 +5,11 @@
 
 
 	<!-- Hero Section -->
-	<section class="hero-section">
+	<section class="hero-section" >
 		<div class="hero-social-warp">
 			<div class="hero-social">
-                							{#	TODO: add link#}
-				<a href="#"><i class="fa fa-facebook"></i></a>
-				<a href="#"><i class="fa fa-linkedin"></i></a>
+				<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+				<a href="https://www.linkedin.com/"><i class="fa fa-linkedin"></i></a>
 			</div>
 		</div>
 		<div class="hero-slider owl-carousel">
@@ -20,8 +19,9 @@
 						<div class="hs-text">
 							<h2>Empower Your Progress</h2>
 							<p>Join a community committed to wellness. Achieve your health goals with tailored fitness plans, nutritional guidance, and motivational insights. Start your journey to a better you today.</p>
-{#                                TODO: do not show button register if user is logged #}
+                            {% if not request.user.is_authenticated %}
                             <a href="{%   url 'register-user' %}"><div class="site-btn sb-white">Register now</div></a>
+                            {% endif %}
 						</div>
 					</div>
 					<div class="hs-img">
@@ -30,8 +30,10 @@
 				</div>
 			</div>
 		</div>
+    <div class="arrow-buttom">
+        <img src="{% static 'img/icons/arrows-buttom.png' %}" alt="">
+    </div>
 	</section>
-{#    TODO: get back the down arrows #}
 	<!-- Hero Section end -->
 
 	<!-- About Section -->
@@ -45,8 +47,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="about-img">
-{#                        TODO: fix styles #}
-						<img src="{%  static 'img/diary.jpg' %}" alt="">
+						<img height="600px" src="{%  static 'img/diary.jpg' %}" alt="">
 					</div>
 				</div>
 				<div class="col-lg-6">
@@ -93,36 +94,35 @@
 				<h2>Featured Workouts</h2>
 				<p>Explore our diverse workout classes designed to fit your schedule and meet your fitness goals. From strength training to flexibility exercises, discover your next challenge.</p>
 			</div>
-{#            TODO: update this section with specific workouts available#}
+
 			<div class="classes-slider owl-carousel">
-{#                    TODO: filter workouts with best ratings and add the rating starts#}
+
+{#                    TODO: filter workouts with best ratings and add the rating stars#}
 				{% for obj in workouts %}
 
 
                 <div class="classes-item">
 									<div class="ci-img">
-{#                                        TODO: fix this to be dynamic for every entry, and add a placeholder#}
-{#                                        TODO: stop the carousel when video is palyed and add navigation for the user to left and right#}
-{#										<img src="{% static 'img/classes/1.jpg' %}" alt="">#}
-{#                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>#}
-                                        <iframe width="280" height="280" src="https://www.youtube.com/embed/8E0-1NYFOHg?si=rgBt0a4nxwKpozHN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+{#                                        LATER: stop the carousel when video is palyed and add navigation for the user to left and right#}
+
+                                        {%  if obj.video_url %}
+                                         <iframe width="280" height="300" src="{{ obj.video_url }}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                        {% else %}
+                                            <img style="width: 280px;height: 280px;min-width: 40%" src="{% static 'img/classes/1.jpg' %}" alt="">
+                                        {%  endif %}
+
 									</div>
 									<div class="ci-text">
-										<h4><a href="">Some name</a></h4>
+										<h4><a href="{% url 'details-workout' obj.pk %}">{{ obj.name }}</a></h4>
 										<div class="ci-metas">
-{#                                            TODO: Add more suitable icons#}
-											<div class="ci-meta"><i class="material-icons">event_available</i>""</div>
-											<div class="ci-meta"><i class="material-icons">alarm_on</i>""</div>
-                                            <div class="ci-meta"><i class="material-icons">alarm_on</i>""</div>
+											<div class="ci-meta"><i class="material-icons">category</i>Type: {{ obj.type }}</div>
+											<div class="ci-meta"><i class="material-icons">list</i>Category: {{ obj.category }}</div>
+                                            <div class="ci-meta"><i class="material-icons">whatshot</i>Intensity: {{ obj.intensity }}</div>
 										</div>
-										<p>Description: </p>
-                                        <p>Equipment needed: </p>
 									</div>
 
 									<div class="ci-bottom">
-{#                                        TODO: redirect the anonymous user to register page#}
 										<div class="ci-author">
-
                                             <a href="{% url 'details-workout' obj.pk %}" class="site-btn sb-gradient">More details</a>
 										</div>
 									</div>
@@ -135,8 +135,7 @@
 	</section>
 	<!-- Classes Section end -->
 
-{##}
-{#TODO: to fix the sizing pictures#}
+
 
 	<!-- Review Section -->
 	<section class="review-section spad set-bg" data-setbg="img/review-bg.jpg">

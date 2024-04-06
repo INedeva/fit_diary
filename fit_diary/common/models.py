@@ -31,7 +31,6 @@ class Comment(models.Model):
     class Meta:
         ordering = ['-created_at']
 
-    # TODO LATER: test it
     def __str__(self):
         return f"{self.user.profile.full_name}: {self.text[:10]}... ({self.created_at.strftime('%Y-%m-%d')})"
 
@@ -62,6 +61,5 @@ class Rating(models.Model):
         unique_together = (('user', 'workout'),)
         index_together = (('user', 'workout'),)
 
-    # TODO LATER: test it
     def __str__(self):
         return f"{self.user.profile.full_name} rated {self.workout.name} with {self.score}"
