@@ -1,28 +1,19 @@
 """
 accounts
-1. signal - check if user is created - IMPORTANT
-2. RegisterUserView - is the user logged in after registration
-
+1. signal - check if user is created  - DONE
+2. RegisterUserView - is the user logged in after registration - DONE
 common
-3. model - Comment - check ordering
-4. Index - FBV
-5. Func - create_comment_to_workout - IMPORTANT
-6. Func - delete_comment_to_workout - IMPORTANT
-7. Func - remove_rating_from_workout - IMPORTANT
-
+3. Index - FBV - DONE
+4. Func - create_comment_to_workout - DONE
+5. Func - delete_comment_to_workout  - DONE
+6. Func - remove_rating_from_workout  - DONE
 diary
-
-10. Views - DiaryEntryCreateView - get form func - IMPORTANT
-11. Views - DiaryEntryDeleteView - get_form_class func - IMPORTANT
-12. Views - calc_remaining_calories - func - IMPORTANT
-13. Views - calc_water_consumption_in_liters func - IMPORTANT
-14. View - diary_view - MANY TESTS - IMPORTANT
-
+7. Views - calc_remaining_calories - func - DONE
+8. Views - calc_water_consumption_in_liters func - DONE
+9,10. View - diary_view - 2 tests - DONE
 workouts
-15. View - WorkoutCreateView - get_form func
-16. View - WorkoutListView - FILTRATION  - IMPORTANT
-17. View - WorkoutListView - SORTING
-18. View - WorkoutListView - get_context_data
-19. View - WorkoutDetailView - get_context_data
-20. View - WorkoutDetailView - post func for rating
+11,12,13. View - WorkoutListView - FILTRATION , SORTING  - DONE
+14. common - Func - delete_comment_to_workout when not owner - DONE
+15,16,17 - WorkoutDeleteView - DONE
+
 """

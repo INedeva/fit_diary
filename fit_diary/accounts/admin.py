@@ -15,7 +15,7 @@ UserModel = get_user_model()
 class ProfileInline(admin.StackedInline):
     # Viewing the user and its profile together in one place in the admin panel
     model = Profile
-    can_delete = False  # The profile cannot be deleted without user deletion
+    can_delete = False
     verbose_name = 'Profile'
     fk_name = 'user'
 

@@ -108,13 +108,13 @@ class DiaryEntryDeleteView(OwnerRequiredMixin, DiaryEntryMappingMixin, LoginRequ
         return kwargs
 
 
-def calc_remaining_calories(request):
+def calc_remaining_calories(user):
     DEFAULT_CALORIE_GOAL = 2000
 
     total_calories = 0
 
     date_query = Q(created_at__date=now().date())
-    log_type_query = Q(user=request.user)
+    log_type_query = Q(user=user)
 
     meals = MealEntry.objects.filter(log_type_query & date_query)
     drinks = DrinkEntry.objects.filter(log_type_query & date_query)
@@ -128,20 +128,17 @@ def calc_remaining_calories(request):
         # for meals, the expression doesn't return None, but instead returns 0.
         total_calories += drinks.aggregate(total_calories=Coalesce(Sum('calories'), 0))['total_calories']
 
-    # Get the daily calorie goal for the user or default
-    daily_goal = request.user.profile.daily_calorie_goal or DEFAULT_CALORIE_GOAL
-
-    # Calculate remaining calories
+    daily_goal = user.profile.daily_calorie_goal or DEFAULT_CALORIE_GOAL
     remaining_calories = daily_goal - total_calories
 
     return remaining_calories
 
 
-def calc_water_consumption_in_liters(request):
+def calc_water_consumption_in_liters(user):
     total_water = 0.0
 
     date_query = Q(created_at__date=now().date())
-    log_type_query = Q(user=request.user)
+    log_type_query = Q(user=user)
 
     water = WaterIntakeEntry.objects.filter(log_type_query & date_query)
 
@@ -155,8 +152,8 @@ def calc_water_consumption_in_liters(request):
 def diary_view(request):
     current_user = request.user
 
-    remaining_calories = calc_remaining_calories(request)
-    water_consumption = calc_water_consumption_in_liters(request)
+    remaining_calories = calc_remaining_calories(current_user)
+    water_consumption = calc_water_consumption_in_liters(current_user)
 
     log_type = request.GET.get('log_type', '')
     date_range = request.GET.get('date_range', '')

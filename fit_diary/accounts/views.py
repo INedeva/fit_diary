@@ -1,4 +1,4 @@
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
@@ -7,6 +7,9 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 from fit_diary.accounts.forms import FitDiaryUserCreationForm, ProfileEditForm
 from fit_diary.accounts.models import Profile
+from fit_diary.workouts.mixins import OwnerRequiredMixin
+
+UserModel = get_user_model()
 
 
 class LoginUserView(LoginView):
@@ -50,7 +53,9 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
 
 
 class ProfileDeleteView(LoginRequiredMixin, DeleteView):
-    queryset = Profile.objects.all()
+    # Deleting directly the user, to use the CASCADE, otherwise only Profile is deleted
+    queryset = UserModel.objects.all()
     template_name = 'accounts/delete-profile.html'
     success_url = reverse_lazy('index')
-    # TODO: to ask should not we delete the user not the profile ?
+
+

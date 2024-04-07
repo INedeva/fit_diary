@@ -200,7 +200,7 @@ class Profile(models.Model):
 
         return self.first_name or self.last_name
 
-    # TODO LATER: test it
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}, ({self.age})"
 #

@@ -33,8 +33,6 @@ def create_comment_to_workout(request, workout_id):
     if request.method == 'POST':
         workout = Workout.objects.get(id=workout_id)
         form = AddCommentForm(request.POST)
-        print(form.is_valid())
-        print(form.cleaned_data)
 
         if form.is_valid():
             comment = form.save(commit=False)
@@ -46,8 +44,9 @@ def create_comment_to_workout(request, workout_id):
 
 @login_required
 def delete_comment_to_workout(request, workout_id, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id, workout=workout_id, user=request.user)
-    if request.method == 'POST':
+    comment = Comment.objects.filter(id=comment_id).first()
+
+    if request.method == 'POST' and comment.workout.id == workout_id and comment.user == request.user:
         comment.delete()
     #     messages.success(request, "Your comment has been deleted.")
     # else:

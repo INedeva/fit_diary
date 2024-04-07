@@ -60,7 +60,6 @@ class WorkoutListView(LoginRequiredMixin, ListView):
         if intensity:
             queryset = queryset.filter(intensity=intensity)
 
-
         if sort == 'oldest':
             queryset = queryset.order_by('created_at')
         elif sort == 'newest':
