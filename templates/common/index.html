@@ -86,6 +86,7 @@
 	</section>
 	<!-- About Section end -->
 
+    {% if workouts %}
 	<!-- Classes Section -->
 	<section class="classes-section spad">
 		<div class="container">
@@ -103,7 +104,6 @@
 
                 <div class="classes-item">
 									<div class="ci-img">
-{#                                        LATER: stop the carousel when video is palyed and add navigation for the user to left and right#}
 
                                         {%  if obj.video_url %}
                                          <iframe width="280" height="300" src="{{ obj.video_url }}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -134,7 +134,7 @@
 		</div>
 	</section>
 	<!-- Classes Section end -->
-
+{%  endif %}
 
 
 	<!-- Review Section -->
@@ -179,10 +179,5 @@
 		</div>
 	</section>
 	<!-- Review Section end -->
-
-
-
-
-
 
 {%  endblock %}

@@ -111,7 +111,10 @@ class DrinkEntry(FoodEntry):
     )
     unit = models.CharField(
         max_length=FoodEntry.MAX_UNIT_LENGTH,
-        choices=Unit.choices,
+        choices=(
+            (Unit.LITERS, Unit.LITERS),
+            (Unit.MILLILITERS, Unit.MILLILITERS),
+        ),
         blank=True,
         null=True,
         default=Unit.MILLILITERS,
@@ -128,6 +131,7 @@ class WaterIntakeEntry(FoodEntry):
     unit = models.CharField(
         max_length=FoodEntry.MAX_UNIT_LENGTH,
         choices=((Unit.LITERS, Unit.LITERS),),
+        default=Unit.LITERS,
     )
 
     class Meta:

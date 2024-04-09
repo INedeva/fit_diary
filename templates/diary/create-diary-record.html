@@ -5,12 +5,9 @@
         <section class="hero-section" style="height: 110%;">
                 <div class="container ">
                     <div class="trainer-details login-container" style="max-width: 800px;">
-
                         <h2>Log {{ request.GET.entry_type }} entry</h2>
                         <br>
-
                         <form action="{%  url 'log-diary'  %}" method="post" class="singup-form login-form" enctype="multipart/form-data">
-
                             {{ form.as_p}}
                             {% csrf_token %}
                             <input type="hidden" name="entry_type" value="{{ request.GET.entry_type }}">

@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -10,9 +11,6 @@ from fit_diary.common.models import Rating
 from fit_diary.workouts.forms import WorkoutDeleteForm
 from fit_diary.workouts.mixins import OwnerRequiredMixin
 from fit_diary.workouts.models import Workout, Category, Intensity, WorkoutType
-
-
-# Create your views here.
 
 
 class WorkoutCreateView(LoginRequiredMixin, CreateView):
@@ -26,6 +24,12 @@ class WorkoutCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return form
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not self.request.user.groups.filter(name='Moderator').exists():
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+
 
 class WorkoutEditView(OwnerRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Workout
@@ -33,16 +37,12 @@ class WorkoutEditView(OwnerRequiredMixin, LoginRequiredMixin, UpdateView):
     template_name = 'workouts/edit-workout.html'
     success_url = reverse_lazy('list-workout')
 
-    # def form_valid(self, form):
-    #     form.instance.user = self.request.user
-    #     return super().form_valid(form)
-
 
 class WorkoutListView(LoginRequiredMixin, ListView):
     model = Workout
     context_object_name = 'workouts'
     template_name = 'workouts/catalogue-workouts.html'
-    paginate_by = 6
+    paginate_by = 4
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -51,6 +51,7 @@ class WorkoutListView(LoginRequiredMixin, ListView):
         intensity = self.request.GET.get('intensity', '')
         sort = self.request.GET.get('sort', '')
 
+        # Filtration
         if category:
             queryset = queryset.filter(category=category)
 
@@ -60,6 +61,7 @@ class WorkoutListView(LoginRequiredMixin, ListView):
         if intensity:
             queryset = queryset.filter(intensity=intensity)
 
+        # Sorting
         if sort == 'oldest':
             queryset = queryset.order_by('created_at')
         elif sort == 'newest':
@@ -125,7 +127,3 @@ class WorkoutDeleteView(OwnerRequiredMixin, LoginRequiredMixin, DeleteView):
         kwargs['instance'] = self.object
         return kwargs
 
-    # def delete(self, request, *args, **kwargs):
-    #     workout = self.get_object()
-    #     workout.delete()
-    #     return redirect(self.success_url)

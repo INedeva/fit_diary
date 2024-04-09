@@ -5,11 +5,8 @@ from django.contrib.auth.admin import UserAdmin
 from fit_diary.accounts.forms import FitDiaryUserCreationForm, FitDiaryUserChangeForm
 from fit_diary.accounts.models import Profile
 
-# Register your models here.
-
 
 UserModel = get_user_model()
-# TODO: Delete the moderator, it is too much
 
 
 class ProfileInline(admin.StackedInline):
@@ -27,7 +24,7 @@ class FitDiaryUserAdmin(UserAdmin):
     form = FitDiaryUserChangeForm
     inlines = (ProfileInline,)
 
-    list_display = ('pk', 'email',  'is_superuser', 'is_moderator','is_staff','is_active', 'date_joined')
+    list_display = ('pk', 'email',  'is_superuser','is_staff' , 'is_moderator','is_active', 'date_joined')
     list_display_links = ('pk', 'email',)
     list_filter = ('is_staff', 'is_active', 'is_superuser')
     search_fields = ('email',)
@@ -48,8 +45,7 @@ class FitDiaryUserAdmin(UserAdmin):
     )
 
     def is_moderator(self, obj):
-        """Check if the user is in the Moderator group."""
         return obj.groups.filter(name='Moderator').exists()
 
     is_moderator.boolean = True  # Displays as a checkbox icon
-    is_moderator.short_description = 'Moderator status'  # Column heade
+    is_moderator.short_description = 'Moderator status'  # Column header

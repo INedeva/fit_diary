@@ -12,8 +12,6 @@ class AddCommentForm(forms.ModelForm):
             'text': forms.Textarea(attrs={'placeholder': 'Add comment...'}),
         }
 
-# TODO: edit and delete comments
-
 
 class AddRatingForm(forms.ModelForm):
     class Meta:

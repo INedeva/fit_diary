@@ -7,13 +7,11 @@
                     <div class="trainer-details login-container" style="max-width: 800px;">
                         <h2>Create Workout</h2>
                         <br>
-
                         <form action="{%  url 'create-workout'  %}" method="post" class="singup-form contact-form" >
 
-                                        {{ form.as_p}}
-                                        {% csrf_token %}
-
-                                        <button type="submit" class="site-btn sb-gradient">Create</button>
+                                {{ form.as_p}}
+                                {% csrf_token %}
+                                <button type="submit" class="site-btn sb-gradient">Create</button>
                         </form>
                     </div>
                 </div>

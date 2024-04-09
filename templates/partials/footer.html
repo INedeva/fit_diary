@@ -1,3 +1,4 @@
+{% load moderator_tags %}
 {% load static %}
 
 <!-- Footer Section -->
@@ -34,8 +35,12 @@
 						<h2 class="fw-title">Workouts</h2>
 						<ul>
 							<li><a href="{% url 'list-workout' %}">Workouts</a></li>
-							<li><a href="{% url 'create-workout' %}">Create Workout</a></li>
 
+                            {% if user.is_authenticated %}
+                                {% if request.user|is_moderator %}
+							        <li><a href="{% url 'create-workout' %}">Create Workout</a></li>
+                                {% endif %}
+                            {% endif %}
 						</ul>
 					</div>
 				</div>

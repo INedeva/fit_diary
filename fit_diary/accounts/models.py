@@ -8,7 +8,6 @@ from django.db import models
 from fit_diary.accounts.managers import FitDiaryUserManager
 
 
-
 class FitDiaryUser(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(
@@ -29,7 +28,7 @@ class FitDiaryUser(AbstractBaseUser, PermissionsMixin):
         help_text=_(
             "Designates whether this user should be treated as active. "
             "Unselect this instead of deleting accounts."
-            # TODO : instead of deleting the user, deactivate it ?
+
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
@@ -200,12 +199,11 @@ class Profile(models.Model):
 
         return self.first_name or self.last_name
 
-
     def __str__(self):
         return f"{self.first_name} {self.last_name}, ({self.age})"
 #
 # class UserMeasurements(models.Model):
-#     # TODO LATER: Add validation for all fields to be positive
+#     # TO DO LATER: Add validation for all fields to be positive when we get to dashboard implementation
 #     weight_kg = models.FloatField(
 #         null=True,
 #         blank=True,
@@ -250,11 +248,13 @@ class Profile(models.Model):
 #         auto_now_add=True,
 #     )
 #
+
 #     # Body Adiposity Index (BAI)
 #     # Underweight: BAI < 18
 #     # Normal Weight: BAI = 18–25
 #     # Overweight: BAI = 25–30
 #     # Obese: BAI > 30
+
 #     @property
 #     def bai(self):
 #         if self.height_cm and self.hips_cm:

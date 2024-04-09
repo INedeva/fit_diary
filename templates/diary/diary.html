@@ -5,37 +5,25 @@
 
 	<!-- Page top Section -->
 	<section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg" style="height: 400px">
-
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-7 m-auto text-white">
 					<h2>FIT Diary </h2>
                 </div>
-
-
                 <div class="col-lg-5 m-auto ">
                         <form method="get" action="{% url 'log-diary' %}">
 
                             <select name="entry_type" class="circle-select" onchange="this.form.submit()">
-
                                 <option value="meal" {% if request.GET.entry_type == "meal" %}selected{% endif %}>Log meal</option>
                                 <option value="drink" {% if request.GET.entry_type == "drink" %}selected{% endif %}>Log drink</option>
                                 <option value="water" {% if request.GET.entry_type == "water" %}selected{% endif %}>Log water</option>
-
                             </select>
                         </form>
                     </div>
-
 			</div>
-
-
 		</div>
 	</section>
 	<!-- Page top Section end -->
-
-
-
-
 
 
    <div class="container" style="padding-top: 20px;">
@@ -85,7 +73,6 @@
 	<!-- Events Section -->
 	<section class="events-page-section spad">
 		<div class="container">
-{#			<div class="row">#}
 
                 {%  if meals %}
 
@@ -137,7 +124,7 @@
 
         {%  if drinks %}
                     <!-- Drinks Column -->
-{#            <div class="col-md-4">#}
+
                 <h3 class="category-heading">Drinks</h3>
                 <div class="row">
                 {% for obj in drinks %}
@@ -179,7 +166,6 @@
 
         {%  if waters %}
             <!-- Water Column -->
-{#            <div class="col-md-4">#}
                 <h3 class="category-heading">Water</h3>
             <div class="row">
                 {% for obj in waters %}
@@ -219,11 +205,6 @@
 
 			</div>
             {%  endif %}
-{#			<div class="site-pagination pt-3">#}
-{#				<a href="#" class="active">1</a>#}
-{#				<a href="#">2</a>#}
-{#				<a href="#"><i class="material-icons">keyboard_arrow_right</i></a>#}
-{#			</div>#}
 
             <div class="site-pagination pt-3">
                         {% if page_obj.has_previous %}
@@ -247,7 +228,7 @@
 
 		</div>
 	</section>
-	<!-- Events Section end -->
+
 
 
 {% endblock %}

@@ -17,7 +17,6 @@
 	<link rel="stylesheet" href="{% static 'css/animate.css' %}"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-
     {%  block additional_styles %}
     {%  endblock %}
 
@@ -35,45 +34,18 @@
 
 </head>
 <body>
-{#	<!-- Page Preloder -->#}
-{#	<div id="preloder">#}
-{#		<div class="loader"></div>#}
-{#	</div>#}
 
 {%  include 'partials/header.html' %}
 
-{%  include 'partials/infor-model.html' %}
-
-
 {%  block page_top_section %}
-{#    {%  include 'partials/page-top-section.html' %}#}
 {%  endblock %}
 
 
 {% block main_content %}
-{#    {% include 'partials/hero-section.html'%}#}
 {% endblock %}
-
 
 {% block additional_content %}
 {% endblock %}
-
-
-{#{%  include 'partials/about-section.html' %}#}
-{##}
-{#{%  include 'partials/classes-section.html' %}#}
-{##}
-{#{%  include 'partials/trainer-section.html' %}#}
-{##}
-{#{% include 'partials/review-section.html' %}#}
-{##}
-{#{% include 'partials/event-section.html' %}#}
-{##}
-{#{% include 'partials/pricing-section.html' %}#}
-{##}
-{#{% include 'partials/sign-up-section.html' %}#}
-{##}
-{#{% include 'partials/gallery-section.html' %}#}
 
 {% include 'partials/footer.html' %}
 

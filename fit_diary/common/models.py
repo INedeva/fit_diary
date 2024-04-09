@@ -29,10 +29,11 @@ class Comment(models.Model):
     )
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
 
     def __str__(self):
         return f"{self.user.profile.full_name}: {self.text[:10]}... ({self.created_at.strftime('%Y-%m-%d')})"
+
 
 class Rating(models.Model):
 

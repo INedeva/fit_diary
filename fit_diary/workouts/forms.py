@@ -4,10 +4,6 @@ from fit_diary.workouts.models import Workout
 
 
 class WorkoutDeleteForm(forms.ModelForm):
-    # def save(self, commit=True):
-    #     if commit:
-    #         self.instance.delete()
-    #     return self.instance
 
     class Meta:
         model = Workout

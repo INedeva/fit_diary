@@ -7,12 +7,9 @@ from fit_diary.common.models import Rating, Comment
 from fit_diary.workouts.models import Workout
 
 
-# Create your views here.
-
-
 def index(request):
 
-    # Annotate each Workout with its average rating score
+    # Get top 10 highest rated workouts
     queryset = Workout.objects.annotate(average_rating=Avg('rating__score')).order_by('-average_rating')[:10]
 
     context = {'workouts': queryset}
@@ -29,7 +26,7 @@ def contacts(request):
 
 @login_required
 def create_comment_to_workout(request, workout_id):
-    # maybe add later number of comments per workout
+
     if request.method == 'POST':
         workout = Workout.objects.get(id=workout_id)
         form = AddCommentForm(request.POST)
@@ -48,10 +45,9 @@ def delete_comment_to_workout(request, workout_id, comment_id):
 
     if request.method == 'POST' and comment.workout.id == workout_id and comment.user == request.user:
         comment.delete()
-    #     messages.success(request, "Your comment has been deleted.")
-    # else:
-    #     messages.error(request, "Invalid request.")
+
     return redirect(request.META['HTTP_REFERER'] + f'#workout-{workout_id}')
+
 
 @login_required
 def remove_rating_from_workout(request, workout_id):

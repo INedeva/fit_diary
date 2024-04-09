@@ -52,15 +52,6 @@
 
 	<!-- Page top Section -->
 	<section class="page-top-section set-bg" data-setbg="img/page-top-bg.jpg" style="height: 250px">
-{#		<div class="container">#}
-{#			<div class="row">#}
-{#				<div class="col-lg-7 m-auto text-white">#}
-{#                    <h2>Profile details</h2>#}
-{#					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>#}
-{#				</div>#}
-{#			</div>#}
-{#		</div>#}
-
 	</section>
 	<!-- Page top Section end -->
 
@@ -88,12 +79,12 @@
 							<div class="col-lg-8">
 
                                 <div>
-{#                                    <p>Current Rating: </p>#}
+
                                     <div class="rating">
                                         {% for value in rating_range %}
                                         <span class="{% if value <= average_rating %}fas{% else %}far{% endif %} fa-star" style="color: #FFD700;"></span>
                                         {% endfor %}
-{#                                        ({{average_rating}})#}
+
                                     </div>
                                 </div>
 
@@ -111,21 +102,11 @@
                             </div>
                             {%  endif %}
                                 <br>
-
-{#								<div class="cd-meta"><p><i class="material-icons">alarm_on</i>120 Mins </p></div>#}
-{#								<div class="cd-meta"><p><i class="material-icons">people_outline</i>250 People Registered</p></div>#}
 							</div>
-{#							<div class="col-lg-4 text-left text-md-right">#}
-{#								<div class="cd-price">$29</div>#}
-{#							</div>#}
 						</div>
-{#						<p>Description: </p>#}
+
 						<div class="row mb-5">
-{#							<div class="col-lg-5">#}
-{#								<img src="{%  static 'img/classes/classes-details.png' %}" alt="">#}
-{#							</div>#}
 							<div class="col-lg-7">
-{#								<blockquote>On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain.</blockquote>#}
 								<h3>Stats:</h3>
 								<ul>
 									<li><i class="material-icons">done_all</i>Type: {{ object.type }}</li>
@@ -157,27 +138,7 @@
                             </form>
                         {% endif %}
 
-
-
-{#						<div class="row">#}
-{#							<div class="col-sm-7">#}
-{#								<div class="cd-cata"><p><i class="material-icons">local_offer</i>Health & Beauty</p></div>#}
-{#							</div>#}
-{#							<div class="col-sm-5 text-left text-sm-right pt-4 pt-sm-0">#}
-{#								<div class="cd-social">#}
-{#									<a href="#"><i class="fa fa-facebook"></i></a>#}
-{#									<a href="#"><i class="fa fa-instagram"></i></a>#}
-{#									<a href="#"><i class="fa fa-twitter"></i></a>#}
-{#									<a href="#"><i class="fa fa-linkedin"></i></a>#}
-{#								</div>#}
-{#							</div>#}
-{#						</div>#}
 					</div>
-
-
-
-
-
 
 					<h3 class="comment-title">Comments</h3>
 					<ul class="comment-list">
@@ -193,9 +154,8 @@
 
 
 							<div class="comment-text">
-								<h3>{{ comment.user.profile.full_name }} </h3>
-{#								<div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>#}
-								<div class="comment-date"><i class="material-icons">alarm_on</i>{{ comment.created_at }}</div>
+								<h3>{{ comment.user.profile.full_name|default:"Anonymous user" }} </h3>
+                                <div class="comment-date"><i class="material-icons">alarm_on</i>{{ comment.created_at }}</div>
 								<p>{{ comment.text }}</p>
                                 {%  if request.user == comment.user %}
                                     <div class="buttons-container" style="display: flex; justify-content: flex-end; margin-top: 0px;">
@@ -205,13 +165,9 @@
                                     </form>
                                     </div>
                                 {%  endif %}
-
                                 <br>
-
 							</div>
-
 						    </li>
-
                         {% endfor %}
 
                     {% else %}
@@ -234,18 +190,7 @@
 
 
 				<div class="col-lg-3 col-md-5 col-sm-8 sidebar">
-{#					<div class="sb-widget">#}
-{#						<h2 class="sb-title">About instructor</h2>#}
-{#						<div class="classes-info">#}
-{#							<ul>#}
-{#								<li><i class="material-icons">map</i>184 Main Collins Street</li>#}
-{#								<li><i class="material-icons">event_available</i>15 January, 2019</li>#}
-{#								<li><i class="material-icons">done_all</i>Mon, Fri</li>#}
-{#								<li><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</li>#}
-{#								<li><i class="material-icons">person_outline</i>Lori Kennedy</li>#}
-{#							</ul>#}
-{#						</div>#}
-{#					</div>#}
+
 					<div class="sb-widget">
 						<h2 class="sb-title">Added by</h2>
 						<div class="about-instructor-widget">
@@ -287,7 +232,7 @@
 			</div>
 		</div>
 	</section>
-	<!-- Classes Details Section end -->
+
 
 
 {% endblock %}

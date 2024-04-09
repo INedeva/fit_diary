@@ -7,7 +7,7 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 from fit_diary.accounts.forms import FitDiaryUserCreationForm, ProfileEditForm
 from fit_diary.accounts.models import Profile
-from fit_diary.workouts.mixins import OwnerRequiredMixin
+
 
 UserModel = get_user_model()
 
@@ -53,7 +53,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
 
 
 class ProfileDeleteView(LoginRequiredMixin, DeleteView):
-    # Deleting directly the user, to use the CASCADE, otherwise only Profile is deleted
+    # delete the whole user, to use the CASCADE
     queryset = UserModel.objects.all()
     template_name = 'accounts/delete-profile.html'
     success_url = reverse_lazy('index')

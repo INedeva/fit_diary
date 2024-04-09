@@ -3,15 +3,12 @@
 {% block main_content %}
 
     <section class="hero-section">
-    {#    <section class="trainer-details-section spad overflow-hidden">#}
                 <div class="container">
                     <div class="trainer-details login-container" style="max-width: 800px;">
 
                         <h2>Delete {{ request.GET.entry_type }} entry</h2>
                         <br>
-
                         <form action="{%  url 'delete-diary' object.pk  %}" method="post" class="singup-form login-form" enctype="multipart/form-data">
-
                             {{ form.as_p}}
                             {% csrf_token %}
                             <input type="hidden" name="entry_type" value="{{ request.GET.entry_type }}">

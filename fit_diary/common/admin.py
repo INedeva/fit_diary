@@ -3,8 +3,6 @@ from django.contrib import admin
 from fit_diary.common.models import Comment, Rating
 
 
-# Register your models here.
-
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     COMMENT_PREVIEW_LENGTH = 10

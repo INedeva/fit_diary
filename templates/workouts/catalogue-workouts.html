@@ -1,4 +1,5 @@
 {%  extends 'base.html' %}
+{% load moderator_tags %}
 {%  load static %}
 {% block main_content %}
 
@@ -10,20 +11,22 @@
 	<!-- Page top Section end -->
 
 	<!-- Classes Section -->
-
 	<section class="classes-page-section spad overflow-hidden" style="padding-top: 20px;">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-9">
 					<div class="classes-top">
 						<div class="row">
-
                             <div class="col-md-6">
                                 <p>Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ total_workouts }} workouts</p>
-                                <a href="{% url 'create-workout' %}" class="site-btn sb-gradient">+ add new workout</a>
+
+                            {% if user.is_authenticated %}
+                                {% if request.user|is_moderator %}
+                                    <a href="{% url 'create-workout' %}" class="site-btn sb-gradient">+ add new workout</a>
+                                {% endif %}
+                            {% endif %}
+
                             </div>
-
-
 
 							<div class="col-md-6">
                                 {% if object_list %}
@@ -50,7 +53,6 @@
                 {% if object_list %}
                     {%  for obj in object_list %}
 
-
 						<div class="col-md-6">
 							<div class="classes-item-warp">
 								<div class="classes-item">
@@ -63,8 +65,6 @@
                                         {%  endif %}
 
                                     </div>
-
-
 									<div class="ci-text">
 
 										<h4><a href="{% url 'details-workout' obj.pk %}">{{ obj.name }}</a></h4>
@@ -73,9 +73,12 @@
 											<div class="ci-meta"><i class="material-icons">list</i>{{ obj.category }}</div>
                                             <div class="ci-meta"><i class="material-icons">whatshot</i>{{ obj.intensity }}</div>
 										</div>
-										<p>Description: {{ obj.description }}. </p>
+                                        {% if obj.description %}
+										<p>Description: {{ obj.description }} </p>
+                                        {% endif %}
+                                        {% if obj.equipment_needed %}
                                         <p>Equipment needed: {{ obj.equipment_needed }}</p>
-
+                                        {% endif %}
                                         <p>Added: {{ obj.created_at|date:"F j, Y" }}</p>
 									</div>
 
@@ -123,7 +126,7 @@
 
 				</div>
 
-            {%  if object_list %}
+
             <div class="col-lg-3 col-md-5 col-sm-8 sidebar">
                 <div class="sb-widget">
                     <h2 class="sb-title">Filter Workouts</h2>
@@ -156,7 +159,7 @@
 					</div>
 
 				</div>
-            {%  endif %}
+
 
 
 			</div>

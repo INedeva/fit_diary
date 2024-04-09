@@ -55,10 +55,6 @@ class DiaryEntryCreateView(DiaryEntryMappingMixin, LoginRequiredMixin, CreateVie
     template_name = 'diary/create-diary-record.html'
     success_url = reverse_lazy('diary')
 
-    # def form_valid(self, form):
-    #     form.instance.user = self.request.user
-    #     return super().form_valid(form)
-
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
         form.instance.user = self.request.user
@@ -71,15 +67,6 @@ class DiaryEntryCreateView(DiaryEntryMappingMixin, LoginRequiredMixin, CreateVie
 class DiaryEntryEditView(OwnerRequiredMixin, DiaryEntryMappingMixin, LoginRequiredMixin, UpdateView):
     template_name = 'diary/edit-diary-record.html'
     success_url = reverse_lazy('diary')
-
-    # def get_form(self, form_class=None):
-    #     form = super().get_form(form_class=form_class)
-    #     print(self.request.user)
-    #     form.instance.user = self.request.user
-    #     return form
-
-    # def get_object(self, queryset=None):
-    #     pass
 
     def get_queryset(self):
         return self.get_model().objects.all()
@@ -95,9 +82,6 @@ class DiaryEntryDeleteView(OwnerRequiredMixin, DiaryEntryMappingMixin, LoginRequ
             raise Http404("Entry type not found")
         else:
             return DiaryEntryMappingMixin.delete_forms_mapping[entry_type]
-
-    # def get_object(self, queryset=None):
-    #     pass
 
     def get_queryset(self):
         return self.get_model().objects.all()

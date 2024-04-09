@@ -3,7 +3,6 @@ from django.contrib import admin
 from fit_diary.diary.models import MealEntry, DrinkEntry, WaterIntakeEntry
 
 
-# Register your models here.
 
 @admin.register(MealEntry)
 class MealEntryAdmin(admin.ModelAdmin):

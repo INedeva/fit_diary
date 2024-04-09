@@ -1,29 +1,21 @@
 {%  extends 'base.html' %}
-
 {%  load static %}
-
 {%  block main_content %}
 
-
- <!-- Hero Section -->
 	<section class="hero-section">
 
     <div class="login-container">
         <div class="login-content">
             <h2 class="login-title">Fit Diary</h2>
 
-
             <form action="{%  url 'login-user' %}?next={{ next }}" method="post" class="login-form singup-form">
                 {{ form.as_p}}
                 {% csrf_token %}
-
                 <button type="submit" class="site-btn sb-gradient">Log in</button>
             </form>
 
-
         </div>
         <div class="login-footer">
-
 
             <p>Don't have an account? <a href="{%  url 'register-user' %}" class="register-link">Register</a></p>
         </div>
