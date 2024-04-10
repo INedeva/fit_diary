@@ -4,23 +4,17 @@ from django.contrib.auth import get_user_model
 
 from fit_diary.common.models import Rating
 from fit_diary.workouts.models import Workout
+from tests.test_base import TestBase
 
 UserModel = get_user_model()
 
 
-class IndexViewTests(TestCase):
+class IndexViewTests(TestBase):
 
     def test_get_index_view__expect_200_with_context_with_workouts_ordered_by_rating(self):
-        USER_DATA_1 = {
-            'email': 'testuser@abv.bg',
-            'password': '123Password'
-        }
-        USER_DATA_2 = {
-            'email': 'testuser2@abv.bg',
-            'password': '123Password'
-        }
-        user = UserModel.objects.create_user(**USER_DATA_1)
-        user2 = UserModel.objects.create_user(**USER_DATA_2)
+
+        user = self._create_user(self.USER_DATA)
+        user2 = self._create_user(self.SECOND_USER_DATA)
 
         workout1 = Workout.objects.create(name='Workout 1', user=user)
         workout2 = Workout.objects.create(name='Workout 2', user=user)

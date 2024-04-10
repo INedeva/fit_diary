@@ -1,14 +1,15 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from fit_diary.accounts.models import Profile
+from tests.test_base import TestBase
 
 UserModel = get_user_model()
 
 
-class ProfileSignalTestCase(TestCase):
+class ProfileSignalTestCase(TestBase):
     def test_profile_creation(self):
 
-        user = UserModel.objects.create_user(email='testuser@abv.bg', password='12345')
+        user = self._create_user(self.USER_DATA)
 
         self.assertIsNotNone(user)
         self.assertEqual(UserModel.objects.count(), 1)

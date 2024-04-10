@@ -6,20 +6,20 @@ from django.contrib.auth import get_user_model
 from django.utils.timezone import now
 
 from fit_diary.diary.models import MealEntry, DrinkEntry, WaterIntakeEntry
+from tests.test_base import TestBase
 
 UserModel = get_user_model()
 
 
-class DiaryViewTestCase(TestCase):
+class DiaryViewTestCase(TestBase):
 
     def setUp(self):
-        user = UserModel.objects.create_user(email='testuser@abv.bg', password='123Password')
-        self.client.login(email='testuser@abv.bg', password='123Password')
+        user = self._create_user(self.USER_DATA)
+        self.client.login(**self.USER_DATA)
 
         self.meal = MealEntry.objects.create(user=user, name="Oatmeal", calories=300)
         DrinkEntry.objects.create(user=user, name="Orange Juice", calories=120)
         WaterIntakeEntry.objects.create(user=user, quantity=1.0, unit='Liters')
-
 
     def test_diary_view_today_entries(self):
         response = self.client.get(reverse('diary'), {'date_range': 'today'})
@@ -35,7 +35,7 @@ class DiaryViewTestCase(TestCase):
         self.assertEqual(len(response.context['waters']), 1)
 
     def test_diary_view_meals_only(self):
-        response = self.client.get(reverse('diary'), { 'log_type': 'meal'})
+        response = self.client.get(reverse('diary'), {'log_type': 'meal'})
 
         self.assertEqual(response.status_code, 200)
 

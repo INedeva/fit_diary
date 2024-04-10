@@ -3,16 +3,16 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 from fit_diary.workouts.models import Workout, Category, WorkoutType, Intensity
+from tests.test_base import TestBase
 
 UserModel = get_user_model()
 
 
-class WorkoutListViewTestCase(TestCase):
+class WorkoutListViewTestCase(TestBase):
 
     def setUp(self):
-        self.user = UserModel.objects.create_user(email='testuser@abv.bg', password='123Password')
-        self.client.login(email='testuser@abv.bg', password='123Password')
-
+        self.user = self._create_user(self.USER_DATA)
+        self.client.login(**self.USER_DATA)
 
     def test_filter_workouts_by_category_and_type(self):
         Workout.objects.create(name='Cardio 1', category=Category.ADVANCED, type=WorkoutType.HIIT,

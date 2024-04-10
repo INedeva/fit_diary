@@ -4,17 +4,18 @@ from django.contrib.auth import get_user_model
 
 from fit_diary.common.models import Rating
 from fit_diary.workouts.models import Workout
+from tests.test_base import TestBase
 
 UserModel = get_user_model()
 
 
-class RatingRemovalTestCase(TestCase):
+class RatingRemovalTestCase(TestBase):
 
     def test_remove_rating_from_workout(self):
-        user = UserModel.objects.create_user(email='testuser@abv.bg', password='123Password')
-        self.client.login(email='testuser@abv.bg', password='123Password')
+        user = self._create_user(self.USER_DATA)
+        self.client.login(**self.USER_DATA)
 
-        workout = Workout.objects.create(name='Test Workout', user=user)
+        workout = self._create_workout(user)
         Rating.objects.create(score=5, workout=workout, user=user)
 
         referer_url = reverse('details-workout', kwargs={'pk': workout.id})
